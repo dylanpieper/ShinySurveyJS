@@ -59,7 +59,7 @@ http://your-app-url.com/?survey=dynamicSurvey
 To create a new survey:
 1. Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a JSON of your survey
 2. Create a new unique `SurveyName.json` file in `www/`
-3. Run `app.R`.
+3. Run `app.R`
 
 ## Conclusion
 
