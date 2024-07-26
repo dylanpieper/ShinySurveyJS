@@ -1,0 +1,16 @@
+{
+  "title": "Simple Survey",
+  "elements": [
+    {
+      "type": "text",
+      "name": "question1",
+      "title": "What is your name?"
+    },
+    {
+      "type": "dropdown",
+      "name": "location",
+      "title": "Select your location",
+      "choices": []
+    }
+  ]
+}
