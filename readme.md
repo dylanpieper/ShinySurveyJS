@@ -50,7 +50,7 @@ In this case, the choices for the `location` question will be updated based on t
 
 To get started with the Shiny Survey App, clone this repository, and run `app.R`.
 
-⚠️ **If you see a blank page, try to define a survey in the query parameter in the URL to initialize a survey, e.g., `?survey=dynamicSurvey`.**
+⚠️ **You will see a blank window until you define a survey in the query parameter in the URL, e.g. `?survey=dynamicSurvey`**
 
 To create a new survey:
 1. Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a JSON of your survey
