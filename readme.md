@@ -12,7 +12,7 @@ ShinySurveyJS is a flexible framework that allows you to create and manage multi
     -   `dynamicSurvey.json`: This JSON file contains the first example survey, which includes an example of a dynamically updating question choices.
     -   `staticSurvey.json`: This JSON file contains the second example survey, which can be used to demonstrate switching between surveys.
 
-3.  `shiny/`: This directory contains the Shiny UI and Server functions for the survey. These functions are defined in the `survey.R` file. Additional functions can be stored and sourced from files from this directory.
+3.  `shiny/`: This directory contains the Shiny UI and Server functions for the survey. These functions are defined in the `survey.R` file. Additional functions can be stored and sourced from files in this directory.
 
     -   `survey.R`: This file defines the `surveyUI` and `surveyServer` functions, which are responsible for creating the survey UI and managing the server-side operations.
 
