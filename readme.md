@@ -48,7 +48,7 @@ In this case, the choices for the `location` question will be updated based on t
 
 ## Getting Started
 
-To get started with the Shiny Survey App, simply clone this repository, install the required R packages, and run `app.R`. 
+To get started with the Shiny Survey App, simply clone this repository, install the required R packages, and run `app.R`.
 
 ⚠️ **If you see a blank page, remember to define a survey in the query parameter in the URL to initialize a survey, e.g., `?survey=dynamicSurvey`.**
 
@@ -61,4 +61,7 @@ ShinySurveyJS provides a powerful flexible platform for creating and managing su
 ## To-do ✔️
 
 -   Integrate with a db server (self-hosted MySQL/MariaDB server or Supabase)
+-   Create dynamic JSON file
+    -   Paste together JSON file fragments (e.g., demographics)
+    -   Ability to paste data from db into JSON fields
 -   Encrypt the URL parameters
