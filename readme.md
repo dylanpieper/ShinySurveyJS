@@ -22,10 +22,12 @@ You can create multiple surveys within the same app by using different JSON file
 
 To initialize or switch between surveys, use the `survey` query parameter in the URL. For example, if you have two surveys defined in `dynamicSurvey.json` and `staticSurvey.json`, you can switch between them using the URLs:
 
+```         
+http://your-app-url.com/?survey=dynamicSurvey
 ```
-http://your-app-url.com/?survey=dyanmicSurvey
-```
+
 OR
+
 ```         
 http://your-app-url.com/?survey=staticSurvey
 ```
@@ -39,14 +41,14 @@ For example, if you have a question in your survey that asks for the location of
 To specify an entity, use the `entity` query parameter in the URL:
 
 ```         
-http://your-app-url.com/?survey=dyanmicSurvey&entity=Entity1
+http://your-app-url.com/?survey=dynamicSurvey&entity=Entity1
 ```
 
 In this case, the choices for the `location` question will be updated based on the locations associated with `Entity1`.
 
 ## Getting Started
 
-To get started with the Shiny Survey App, simply clone this repository, install the required R packages, and run `app.R`. You must define a survey in the query parameter in the URL to initialize a survey, e.g., `?survey=dyanmicSurvey`.
+To get started with the Shiny Survey App, simply clone this repository, install the required R packages, and run `app.R`. You must define a survey in the query parameter in the URL to initialize a survey, e.g., `?survey=dynamicSurvey`.
 
 ## Conclusion
 
