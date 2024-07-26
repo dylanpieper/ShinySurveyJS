@@ -22,8 +22,11 @@ You can create multiple surveys within the same app by using different JSON file
 
 To initialize or switch between surveys, use the `survey` query parameter in the URL. For example, if you have two surveys defined in `dynamicSurvey.json` and `staticSurvey.json`, you can switch between them using the URLs:
 
-```         
+```
 http://your-app-url.com/?survey=dyanmicSurvey
+```
+OR
+```         
 http://your-app-url.com/?survey=staticSurvey
 ```
 
