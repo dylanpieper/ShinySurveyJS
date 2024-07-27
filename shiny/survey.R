@@ -26,6 +26,9 @@ surveyServer <- function(input, output, session) {
     query <- parseQueryString(session$clientData$url_search) # Parse the query string
     entity <- query$entity # Extract the entity parameter
     survey <- query$survey # Extract the survey parameter
+    all_surveys <- print(sub("\\.json$", "", list.files("www/", pattern = "*.json", full.names = FALSE)))
+    all_entities <- unique(entities$entity) # Get the unique entities
+    all_hash_objects <- c(all_surveys, all_entities) # Combine the surveys and entities into a single vector
     
     # If a survey parameter was provided
     if (!is.null(survey)) {
