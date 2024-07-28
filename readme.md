@@ -48,29 +48,27 @@ In this case, the choices for the `location` question will be updated based on t
 
 ## Getting Started
 
-To get started with the Shiny Survey App, clone this repository, and run `app.R`.
-
-⚠️ **You will see a blank window until you define a survey in the query parameter in the URL**
+To get started with the Shiny Survey App, clone this repository, run `app.R`, and define a survey in the URL query parameter.
 
 ```         
 http://your-app-url.com/?survey=dynamicSurvey
 ```
 
-To create a new survey:
-1. Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a JSON of your survey
-2. Create a new unique `SurveyName.json` file in `www/`
+To create a new survey: 
+1. Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a JSON of your survey 
+2. Create a new unique `SurveyName.json` file in `www/` 
 3. Run `app.R`
 
 ## Conclusion
 
-ShinySurveyJS provides a powerful flexible framework for creating and managing surveys. With its unique ability to handle multiple surveys, dynamically update fields, and even present results (tables and figures). We  leverage all of the features in the [SurveyJS](https://surveyjs.io/) library, making this framework an ideal solution for a wide range of survey needs.
+ShinySurveyJS provides a powerful flexible framework for creating and managing surveys. With its unique ability to handle multiple surveys, dynamically update fields, and even present results (tables and figures). We leverage all of the features in the [SurveyJS](https://surveyjs.io/) library, making this framework an ideal solution for a wide range of survey needs.
 
 ------------------------------------------------------------------------
 
 ## To-do ✔️
 
--    Friendly initialization UI
--    Integrate with a db server (self-hosted MySQL/MariaDB server or Supabase)
+-   Friendly initialization UI
+-   Integrate with a db server (self-hosted MySQL/MariaDB server or Supabase)
 -   Create a dynamic JSON file option
     -   Paste JSON file fragments (e.g., demographics)
     -   Ability to paste data from db into JSON fields
