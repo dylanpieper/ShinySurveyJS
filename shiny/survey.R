@@ -2,10 +2,10 @@
 surveyUI <- function(id, theme = "defaultV2") {
   # Determine CSS file based on theme
   css_file <- switch(theme,
-    "defaultV2" = "https://unpkg.com/survey-core@1.11.8/defaultV2.fontless.css",
-    "modern" = "https://unpkg.com/survey-core@1.11.8/modern.css"
+                     "defaultV2" = "https://unpkg.com/survey-core@1.11.8/defaultV2.fontless.css",
+                     "modern" = "https://unpkg.com/survey-core@1.11.8/modern.css"
   )
-
+  
   # Load necessary resources and create survey container
   tagList(
     tags$head(
