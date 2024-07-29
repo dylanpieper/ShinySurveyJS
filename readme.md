@@ -1,75 +1,98 @@
 # ShinySurveyJS
 
-ShinySurveyJS is a flexible framework that allows you to create and manage multiple dynamic surveys and results in a single app. It leverages the power of both Shiny and JavaScript ([SurveyJS](https://surveyjs.io/)) to provide a user-friendly experience, including a [free survey builder tool](https://surveyjs.io/create-free-survey) that generates a JSON file.
+ShinySurveyJS is a flexible and powerful framework that allows you to create, manage, and analyze multiple dynamic surveys within a single Shiny app. By leveraging the capabilities of both Shiny and JavaScript ([SurveyJS](https://surveyjs.io/)), it provides a user-friendly experience for both survey creators and respondents.
+
+## Features
+
+-   **Automatic Parameter Hashing**: Enhance security with automatically generated hashes for URL parameters.
+-   **Multiple Survey Management**: Create and manage multiple surveys within a single app.
+-   **Dynamic Field Updates**: Update survey fields dynamically based on URL parameters.
+-   **Integration with SurveyJS**: Utilize the [free survey builder tool](https://surveyjs.io/create-free-survey) to generate survey JSON files.
+-   **Result Presentation**: Display survey results with tables and figures.
 
 ## File Structure
 
-1.  `app.R`: This is the primary app file where the Shiny app is created and launched.
+```         
+ShinySurveyJS/
+│
+├── app.R                 # Main Shiny app file
+├── hash.csv              # Stores mappings between objects and hashes
+│
+├── www/                  # Directory for web assets
+│   ├── _survey.js        # Client-side survey operations
+│   ├── dynamicSurvey.json    # Example dynamic survey
+│   └── staticSurvey.json     # Example static survey
+│
+└── shiny/                # Directory for Shiny functions
+    └── survey.R          # Defines surveyUI and surveyServer functions
+```
 
-2.  `www/`: This directory holds the JS and JSON files for the surveys. Each survey should have its own JSON file in this directory.
+## Hashing Process and URL Parameters
 
-    -   `_survey.js`: This JS file handles the client-side operations for the survey, such as initializing the survey and updating question choices.
-    -   `dynamicSurvey.json`: This JSON file contains the first example survey, which includes an example of a dynamically updating question choices.
-    -   `staticSurvey.json`: This JSON file contains the second example survey, which can be used to demonstrate switching between surveys.
+ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to sensitive information.
 
-3.  `shiny/`: This directory contains the Shiny UI and Server functions for the survey. These functions are defined in the `survey.R` file. Additional functions can be stored and sourced from files in this directory.
+### Functionality:
 
-    -   `survey.R`: This file defines the `surveyUI` and `surveyServer` functions, which are responsible for creating the survey UI and managing the server-side operations.
+1.  When a new object (survey, entity, or any custom parameter) is added to the system, a unique hash is automatically generated and stored in `hash.csv`.
+2.  `hash.csv` contains two columns: `object` (the actual name or identifier) and `hash` (the corresponding unique hash).
+3.  URL parameters use these hashes instead of actual object names.
+
+### Automatic Hash Generation:
+
+-   Hashes consist of a combination of three random letters and three random numbers (e.g., "a1b2c3").
+-   The system ensures each hash is unique within `hash.csv`.
+-   Hashes are automatically generated and managed by the system.
 
 ## Creating Multiple Surveys
 
-You can create multiple surveys within the same app by using different JSON files for each survey. Each JSON file should define the structure and questions for a survey.
-
-To initialize or switch between surveys, use the `survey` query parameter in the URL. For example, if you have two surveys defined in `dynamicSurvey.json` and `staticSurvey.json`, you can switch between them using the URLs:
-
-```         
-http://your-app-url.com/?survey=dynamicSurvey
-```
-
-OR
+1.  Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a survey JSON.
+2.  Save the JSON as a new file (e.g., `NewSurvey.json`) in the `www/` directory.
+3.  The system will automatically detect the new survey and update `hash.csv` with a unique hash.
+4.  Access the new survey using its hash as a URL parameter:
 
 ```         
-http://your-app-url.com/?survey=staticSurvey
+http://your-app-url.com/?survey=a1b2c3
 ```
+
+Where `a1b2c3` is the automatically generated hash for the new survey.
 
 ## Dynamically Updating Fields
 
-The app also can dynamically update question fields based on the `entity` query parameter. This query parameter can be modified and extended in the `shiny/survey.R` file to suit your needs.
+The app can dynamically update fields based on various URL parameters. Modify and extend this functionality in `shiny/survey.R` to suit your needs.
 
-For example, if you have a question in your survey that asks for the location of an entity, you can pre-populate the choices for this question based on the entity specified in the URL.
-
-To specify an entity, use the `entity` query parameter in the URL:
+Example of using multiple parameters:
 
 ```         
-http://your-app-url.com/?survey=dynamicSurvey&entity=Entity1
+http://your-app-url.com/?survey=a1b2c3&entity=g9g4p2
 ```
 
-In this case, the choices for the `location` question will be updated based on the locations associated with `Entity1`.
+The app will use these parameters to update relevant fields or settings based on your defined logic.
 
 ## Getting Started
 
-To get started with the Shiny Survey App, clone this repository, run `app.R`, and define a survey in the URL query parameter.
+1.  Clone this repository, or create a new project using the version control option in RStudio:
 
-```         
-http://your-app-url.com/?survey=dynamicSurvey
-```
+    ```         
+    git clone https://github.com/dylanpieper/ShinySurveyJS.git
+    ```
 
-To create a new survey: 
-1. Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a JSON of your survey 
-2. Create a new unique `SurveyName.json` file in `www/` 
-3. Run `app.R`
+2.  Run the app:
 
-## Conclusion
+    ``` r
+    shiny::runApp("path/to/ShinySurveyJS")
+    ```
 
-ShinySurveyJS provides a powerful flexible framework for creating and managing surveys. With its unique ability to handle multiple surveys, dynamically update fields, and even present results (tables and figures). We leverage all of the features in the [SurveyJS](https://surveyjs.io/) library, making this framework an ideal solution for a wide range of survey needs.
+3.  Access the app using a URL with appropriate parameter hashes:
 
-------------------------------------------------------------------------
+    ```         
+    http://your-app-url.com/?param1=abc123&param2=def456
+    ```
 
 ## To-do ✔️
 
--   Friendly initialization UI
--   Integrate with a db server (self-hosted MySQL/MariaDB server or Supabase)
+-   Friendly initialization UI ✔️
+-   Hash the URL query parameters ✔️
 -   Create a dynamic JSON file option
     -   Paste JSON file fragments (e.g., demographics)
     -   Ability to paste data from db into JSON fields
--   Encrypt the URL parameters
+-   Integrate with a db server (self-hosted MySQL/MariaDB server or Supabase)
