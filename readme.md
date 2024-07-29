@@ -34,7 +34,7 @@ ShinySurveyJS uses an automatic hashing system for URL parameters to enhance sec
 ### Functionality:
 
 1.  When a new object (survey, entity, or any custom parameter) is added to the system, a unique hash is automatically generated and stored in `hash.csv`.
-2.  `hash.csv` contains two columns: `object` (the actual name or identifier) and `hash` (the corresponding unique hash).
+2.  `hash.csv` contains two columns: `object` (the actual name or identifier) and `hash` (the corresponding hash).
 3.  URL parameters use these hashes instead of actual object names.
 
 ### Automatic Hash Generation:
@@ -79,7 +79,7 @@ The app will use these parameters to update relevant fields or settings based on
 2.  Run the app:
 
     ``` r
-    shiny::runApp("path/to/ShinySurveyJS")
+    runApp("path/to/ShinySurveyJS")
     ```
 
 3.  Access the app using a URL with appropriate parameter hashes:
