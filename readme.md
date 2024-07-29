@@ -79,13 +79,13 @@ The app will use these parameters to update relevant fields or settings based on
 2.  Run the app:
 
     ``` r
-    runApp("path/to/ShinySurveyJS")
+    runApp()
     ```
 
 3.  Access the app using a URL with appropriate parameter hashes:
 
     ```         
-    http://your-app-url.com/?param1=abc123&param2=def456
+    http://your-app-url.com/?survey=a1b2c3
     ```
 
 ## To-do ✔️
