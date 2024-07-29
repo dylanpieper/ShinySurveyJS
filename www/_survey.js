@@ -1,32 +1,40 @@
 $(document).ready(function() {
-  var survey; // Create a variable to hold the survey object
+  var survey; // Holds the survey object
 
   function initializeSurvey(surveyJSON) {
     try {
+      // Parse surveyJSON string into an object, if necessary
       if (typeof surveyJSON === 'string') {
-        surveyJSON = JSON.parse(surveyJSON); // If the surveyJSON is a string, parse it into a JSON object
+        surveyJSON = JSON.parse(surveyJSON);
       }
       
-      survey = new Survey.Model(surveyJSON); // Create a new survey model
+      // Initialize the survey model with the JSON
+      survey = new Survey.Model(surveyJSON);
+      // Setup to send survey results to server upon completion
       survey.onComplete.add(function(result) {
-        Shiny.setInputValue("surveyData", JSON.stringify(result.data)); // When the survey is complete, send the data to the server
+        Shiny.setInputValue("surveyData", JSON.stringify(result.data));
       });
-      $("#surveyContainer").Survey({ model: survey }); // Render the survey in the surveyContainer div
+      // Display the survey in the designated container
+      $("#surveyContainer").Survey({ model: survey });
     } catch (error) {
-      console.error("Error initializing survey:", error); // If there is an error initializing the survey, print it to the console
+      // Log initialization errors
+      console.error("Error initializing survey:", error);
     }
   }
 
+  // Handle survey loading requests
   Shiny.addCustomMessageHandler("loadSurvey", function(surveyJSON) {
-    initializeSurvey(surveyJSON); // When a loadSurvey message is received, initialize the survey with the provided JSON
+    initializeSurvey(surveyJSON);
   });
 
+  // Handle requests to update survey choices dynamically
   Shiny.addCustomMessageHandler("updateChoices", function(data) {
     if (survey) {
-      var targetQuestion = survey.getQuestionByName(data.targetQuestion); // Get the question to be updated
+      var targetQuestion = survey.getQuestionByName(data.targetQuestion);
       if (targetQuestion) {
-        targetQuestion.choices = data.choices.map(choice => ({ value: choice, text: choice })); // Update the choices for the question
-        survey.render(); // Re-render the survey
+        // Update question choices based on incoming data
+        targetQuestion.choices = data.choices.map(choice => ({ value: choice, text: choice }));
+        survey.render(); // Refresh the survey display
       }
     }
   });

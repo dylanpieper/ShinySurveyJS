@@ -30,7 +30,7 @@ ShinySurveyJS/
 
 ## Hashing Process and URL Parameters
 
-ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to the survey environment (e.g., users modifying readable URL parameters). However, a word of caution, the current infrastructure does not prevent the programmatic identification of hashes.
+ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to the survey environment (e.g., users modifying readable URL parameters). However, as a word of caution, the current infrastructure does not prevent the programmatic identification of hashes.
 
 ### Functionality:
 
@@ -40,7 +40,7 @@ ShinySurveyJS uses an automatic hashing system for URL parameters to enhance sec
 
 ### Automatic Hash Generation:
 
--   Hashes consist of a combination of three random letters and three random numbers (e.g., "a1b2c3").
+-   Hashes consist of a combination of 10 random alphanumeric characters (e.g., "a1b2c3d4e5").
 -   The system ensures each hash is unique within `hash.csv`.
 -   Hashes are automatically generated and managed by the system.
 
@@ -52,10 +52,10 @@ ShinySurveyJS uses an automatic hashing system for URL parameters to enhance sec
 4.  Access the new survey using its hash as a URL parameter:
 
 ```         
-http://your-app-url.com/?survey=a1b2c3
+http://your-app-url.com/?survey=a1b2c3d4e5
 ```
 
-Where `a1b2c3` is the automatically generated hash for the new survey.
+Where `a1b2c3d4e5` is the automatically generated hash for the new survey.
 
 ## Dynamically Updating Fields
 
@@ -64,7 +64,7 @@ The app can dynamically update fields based on various URL parameters. Modify an
 Example of using multiple parameters:
 
 ```         
-http://your-app-url.com/?survey=a1b2c3&entity=g9g4p2
+http://your-app-url.com/?survey=a1b2c3d4e5&entity=f4d9z0g0o1
 ```
 
 The app will use these parameters to update relevant fields or settings based on your defined logic.
@@ -86,7 +86,7 @@ The app will use these parameters to update relevant fields or settings based on
 3.  Access the app using a URL with appropriate parameter hashes:
 
     ```         
-    http://your-app-url.com/?survey=a1b2c3
+    http://your-app-url.com/?survey=a1b2c3d4e5
     ```
 
 ## To-do ✔️

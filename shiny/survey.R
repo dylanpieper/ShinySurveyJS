@@ -19,7 +19,9 @@ surveyUI <- function(id, theme = "defaultV2") {
 
 # Define server logic for the survey
 surveyServer <- function(input, output, session) {
-  survey_data <- reactiveVal() # Initialize reactive value for survey data
+  # Initialize reactive value for survey data
+  survey_data <- reactiveVal() 
+  
   # Define entities and locations
   entities <- data.frame(
     entity = c("Entity1", "Entity1", "Entity1", "Entity2", "Entity2", "Entity2"),
@@ -38,8 +40,8 @@ surveyServer <- function(input, output, session) {
     generate_unique_hash <- function(existing_hashes) {
       repeat {
         # Generate a hash with three random letters and three random numbers
-        new_hash <- paste0(sample(letters, 3, replace = TRUE), 
-                           sample(0:9, 3, replace = TRUE), collapse = "")
+        new_hash <- paste0(sample(letters, 5, replace = TRUE), 
+                           sample(0:9, 5, replace = TRUE), collapse = "")
         
         # Check if the hash is unique
         if (!(new_hash %in% existing_hashes)) {

@@ -38,7 +38,7 @@ handle_url_parameters <- function(session, hash_local) {
         survey_json_path <- file.path("www", paste0(survey_lookup, ".json"))
         
         if (file.exists(survey_json_path)) {
-          shinyjs::hide("waitingMessage", anim = TRUE, animType = "fade", time = .75)
+          shinyjs::hide("waitingMessage", anim = TRUE, animType = "fade", time = 1)
         } else {
           hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
         }
@@ -49,6 +49,6 @@ handle_url_parameters <- function(session, hash_local) {
 
 # Helper function to hide one message and show another
 hide_and_show_message <- function(hide_id, show_id) {
-  shinyjs::hide(hide_id, anim = TRUE, animType = "fade", time = .75)
-  shinyjs::show(show_id, anim = TRUE, animType = "fade", time = .75)
+  shinyjs::hide(hide_id, anim = TRUE, animType = "fade", time = 1)
+  shinyjs::show(show_id, anim = TRUE, animType = "fade", time = 1)
 }
