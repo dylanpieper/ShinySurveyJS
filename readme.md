@@ -2,13 +2,21 @@
 
 ShinySurveyJS is a flexible and powerful framework that allows you to create and manage multiple dynamic surveys within a single Shiny app. By leveraging the capabilities of both Shiny and JavaScript ([SurveyJS](https://surveyjs.io/)), it provides a user-friendly experience for both survey creators and respondents.
 
-## Features
+## Motivation
 
--   **Automatic Parameter Hashing**: Enhance security with automatically generated hashes for URL parameters.
--   **Multiple Survey Management**: Create and manage multiple surveys within a single app.
--   **Dynamic Field Updates**: Update survey fields dynamically based on URL parameters.
--   **Integration with SurveyJS**: Utilize the [free survey builder tool](https://surveyjs.io/create-free-survey) to generate survey JSON files.
--   **Result Presentation**: Display survey results with tables and figures.
+This app framework is designed with a primary goal in mind: to create a robust, accessible, and secure platform that can host multiple public surveys without built-in user management. Each of the features mentioned above contributes to achieving this overarching objective.
+
+-   **Automatic Parameter Hashing**: In a public survey platform, security is paramount. Automatic parameter hashing deters unauthorized access or modification of survey data by obfuscating URL parameters. This feature is crucial for maintaining the integrity of the survey results and ensuring the privacy of the respondents.
+
+-   **Multiple Survey Management**: The ability to host and manage multiple surveys within a single app is essential for a public survey platform. This feature provides flexibility for survey creators, allowing them to cater to different audiences or research goals within the same platform.
+
+-   **Dynamic Field Updates**: Dynamic field updates based on URL parameters offer a high degree of customization for each survey. This feature enhances the user experience by tailoring the survey to the individual respondent, which can lead to more accurate and meaningful survey results.
+
+-   **Integration with SurveyJS**: Integration with the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor, a free survey builder tool, makes survey creation more accessible for users without advanced technical skills. This feature lowers the entry barrier for survey creators, encouraging a broader range of users to utilize the platform.
+
+-   **Result Presentation**: The ability to display survey results with tables and figures is a powerful tool for data analysis. This feature allows survey creators to draw insights from their data directly within the platform, streamlining the research process.
+
+In summary, each of these features is necessary for creating a robust, user-friendly, and secure platform for hosting multiple public surveys. By focusing on security, accessibility, flexibility, and data analysis, ShinySurveyJS aims to be a comprehensive solution for public survey hosting.
 
 ## File Structure
 
@@ -30,19 +38,19 @@ ShinySurveyJS/
 
 ## Hashing Process and URL Parameters
 
-ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to users modifying readable URL parameters. However, as a word of caution, the current infrastructure does not prevent the programmatic identification of hashes.
+ShinySurveyJS has implemented an automated hashing system for URL parameters to enhance security by making it more challenging to directly access or modify readable URL parameters. It's important to highlight, though, that the current configuration does not fully eliminate the possibility of hashes being programmatically discovered.
 
-### Functionality:
+### Key Features
 
-1.  When a new parameter (survey, entity, or any custom parameter) is added to the system, a unique hash is automatically generated and stored in `hash.csv`.
-2.  `hash.csv` contains two columns: `object` (the actual name or identifier) and `hash` (the corresponding hash).
-3.  URL parameters use these hashes instead of actual object names.
+1.  **Automatic Hash Generation and Storage:** When a new parameter (such as a survey, entity, or any custom parameter) is introduced, a unique hash is generated and stored in `hash.csv`, which is structured into two columns: `object` for the actual name or identifier, and `hash` for the unique hash.
 
-### Automatic Hash Generation:
+2.  **Hash Composition:** The hashes are made up of 10 random alphanumeric characters (e.g., "a1b2c3d4e5"), ensuring each hash is unique within the `hash.csv` file and managed automatically by the system.
 
--   Hashes consist of a combination of 10 random alphanumeric characters (e.g., "a1b2c3d4e5").
--   The system ensures each hash is unique within `hash.csv`.
--   Hashes are automatically generated and managed by the system.
+3.  **URL Parameter Security:** By using these unique hashes in URLs instead of the actual object names or identifiers, the system enhances security and limits direct access or manipulation.
+
+This automated hashing mechanism is a critical aspect of ShinySurveyJS's strategy to secure URL parameters, thereby safeguarding the system against unauthorized changes.
+
+You can disable the hashing mechanism by setting `hash_active = FALSE` in `app.R`. However, it is highly recommended to keep this feature enabled to ensure the security of your app.
 
 ## Creating Multiple Surveys
 

@@ -26,7 +26,6 @@ server <- function(input, output, session) {
   if(hash_active){
     # Read hash.csv at the start of the session
     hash_local <- reactiveVal(read.csv("hash.csv"))
-    
     # Use the new function to handle URL parameters
     handle_url_parameters(session, hash_local)
   }else{
