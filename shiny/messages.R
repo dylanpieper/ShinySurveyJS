@@ -1,0 +1,54 @@
+# UI message functions
+messageUI <- function() {
+  list(
+    tags$head(
+      tags$style(HTML("
+        #waitingMessage, #surveyNotFoundMessage, #surveyNotDefinedMessage {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: white;
+          z-index: 9999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      "))
+    ),
+    div(id = "waitingMessage", "Loading survey..."),
+    div(id = "surveyNotFoundMessage", style = "display: none;", "Survey not found. Please check the URL and try again."),
+    div(id = "surveyNotDefinedMessage", style = "display: none;", "No survey defined. Please provide a survey parameter in the URL.")
+  )
+}
+
+# Handle URL parameters and show appropriate messages
+handle_url_parameters <- function(session, hash_local) {
+  observeEvent(session$clientData$url_search, {
+    query <- parseQueryString(session$clientData$url_search)
+    
+    if (is.null(query$survey)) {
+      hide_and_show_message("waitingMessage", "surveyNotDefinedMessage")
+    } else {
+      survey_lookup <- hash_local()[hash_local()$hash == query$survey, "object"]
+      if (length(survey_lookup) == 0) {
+        hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
+      } else {
+        survey_json_path <- file.path("www", paste0(survey_lookup, ".json"))
+        
+        if (file.exists(survey_json_path)) {
+          shinyjs::hide("waitingMessage", anim = TRUE, animType = "fade", time = .75)
+        } else {
+          hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
+        }
+      }
+    }
+  }, ignoreInit = FALSE)
+}
+
+# Helper function to hide one message and show another
+hide_and_show_message <- function(hide_id, show_id) {
+  shinyjs::hide(hide_id, anim = TRUE, animType = "fade", time = .75)
+  shinyjs::show(show_id, anim = TRUE, animType = "fade", time = .75)
+}

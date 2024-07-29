@@ -1,6 +1,6 @@
 # ShinySurveyJS
 
-ShinySurveyJS is a flexible and powerful framework that allows you to create, manage, and analyze multiple dynamic surveys within a single Shiny app. By leveraging the capabilities of both Shiny and JavaScript ([SurveyJS](https://surveyjs.io/)), it provides a user-friendly experience for both survey creators and respondents.
+ShinySurveyJS is a flexible and powerful framework that allows you to create and manage multiple dynamic surveys within a single Shiny app. By leveraging the capabilities of both Shiny and JavaScript ([SurveyJS](https://surveyjs.io/)), it provides a user-friendly experience for both survey creators and respondents.
 
 ## Features
 
@@ -24,16 +24,17 @@ ShinySurveyJS/
 │   └── staticSurvey.json     # Example static survey
 │
 └── shiny/                # Directory for Shiny functions
-    └── survey.R          # Defines surveyUI and surveyServer functions
+    ├── survey.R          # Defines surveyUI and surveyServer functions
+    └── messages.R        # Defines messageUI and server message functions
 ```
 
 ## Hashing Process and URL Parameters
 
-ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to sensitive information.
+ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to the survey environment (e.g., users modifying readable URL parameters). However, a word of caution, the current infrastructure does not prevent the programmatic identification of hashes.
 
 ### Functionality:
 
-1.  When a new object (survey, entity, or any custom parameter) is added to the system, a unique hash is automatically generated and stored in `hash.csv`.
+1.  When a new parameter (survey, entity, or any custom parameter) is added to the system, a unique hash is automatically generated and stored in `hash.csv`.
 2.  `hash.csv` contains two columns: `object` (the actual name or identifier) and `hash` (the corresponding hash).
 3.  URL parameters use these hashes instead of actual object names.
 
@@ -96,3 +97,4 @@ The app will use these parameters to update relevant fields or settings based on
     -   Paste JSON file fragments (e.g., demographics)
     -   Ability to paste data from db into JSON fields
 -   Integrate with a db server (self-hosted MySQL/MariaDB server or Supabase)
+-   Explore reCAPTCHA integration and bot prevention
