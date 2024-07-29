@@ -20,13 +20,20 @@ ui <- fluidPage(
 
 # Define the server
 server <- function(input, output, session) {
-  # Read hash.csv at the start of the session
-  hash_local <- reactiveVal(read.csv("hash.csv"))
+  # Global logic for activating the URL parameter hashing
+  hash_active <- TRUE
   
-  # Use the new function to handle URL parameters
-  handle_url_parameters(session, hash_local)
+  if(hash_active){
+    # Read hash.csv at the start of the session
+    hash_local <- reactiveVal(read.csv("hash.csv"))
+    
+    # Use the new function to handle URL parameters
+    handle_url_parameters(session, hash_local)
+  }else{
+    handle_url_parameters_hashless(session, hash_local)
+  }
   
-  survey_data <- surveyServer(input, output, session)
+  survey_data <- surveyServer(input, output, session, hash_active)
 }
 
 # Run app

@@ -47,6 +47,29 @@ handle_url_parameters <- function(session, hash_local) {
   }, ignoreInit = FALSE)
 }
 
+# Handle URL parameters and show appropriate messages
+handle_url_parameters_hashless <- function(session, hash_local) {
+  observeEvent(session$clientData$url_search, {
+    query <- parseQueryString(session$clientData$url_search)
+    
+    if (is.null(query$survey)) {
+      hide_and_show_message("waitingMessage", "surveyNotDefinedMessage")
+    } else {
+      if (length(query$survey) == 0) {
+        hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
+      } else {
+        survey_json_path <- file.path("www", paste0(query$survey, ".json"))
+        
+        if (file.exists(survey_json_path)) {
+          shinyjs::hide("waitingMessage", anim = TRUE, animType = "fade", time = 1)
+        } else {
+          hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
+        }
+      }
+    }
+  }, ignoreInit = FALSE)
+}
+
 # Helper function to hide one message and show another
 hide_and_show_message <- function(hide_id, show_id) {
   shinyjs::hide(hide_id, anim = TRUE, animType = "fade", time = 1)

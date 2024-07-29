@@ -30,7 +30,7 @@ ShinySurveyJS/
 
 ## Hashing Process and URL Parameters
 
-ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to the survey environment (e.g., users modifying readable URL parameters). However, as a word of caution, the current infrastructure does not prevent the programmatic identification of hashes.
+ShinySurveyJS uses an automatic hashing system for URL parameters to enhance security and prevent direct access to users modifying readable URL parameters. However, as a word of caution, the current infrastructure does not prevent the programmatic identification of hashes.
 
 ### Functionality:
 
