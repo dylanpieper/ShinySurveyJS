@@ -19,7 +19,7 @@ ShinySurveyJS/
 ├── hash.csv              # Stores mappings between objects and hashes
 │
 ├── www/                  # Directory for web assets
-│   ├── _survey.js        # Client-side survey operations
+│   ├── _survey.js            # Client-side survey operations
 │   ├── dynamicSurvey.json    # Example dynamic survey
 │   └── staticSurvey.json     # Example static survey
 │
