@@ -13,7 +13,7 @@ surveyUI <- function(id, theme = "defaultV2") {
       tags$link(rel = "stylesheet", href = css_file),
       tags$script(src = "_survey.js")
     ),
-    tags$div(id = "surveyContainer"),
+    tags$div(id = "surveyContainer")
   )
 }
 
