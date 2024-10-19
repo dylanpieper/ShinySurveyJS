@@ -14,8 +14,6 @@ This app framework is designed with a primary goal in mind: to create a robust, 
 
 -   **Dynamic Field Updates**: Dynamic field updates based on URL parameters offer a high degree of customization for each survey. This feature enhances the user experience by tailoring the survey to the individual respondent, which can lead to more accurate and meaningful survey results.
 
--   **Result Presentation**: The ability to display survey results with tables and figures using Shiny and JS allows for data analysis built directly into your survey tool. This feature allows survey creators to communicate insights from their data directly within the platform, streamlining the research process.
-
 ## Getting Started
 
 1.  Clone this repository, or create a new project using the version control option in RStudio:
