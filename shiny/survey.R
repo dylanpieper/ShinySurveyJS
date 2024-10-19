@@ -18,64 +18,50 @@ surveyUI <- function(id, theme = "defaultV2") {
 }
 
 # Define server logic for the survey
-surveyServer <- function(input, output, session, hash_active) {
+surveyServer <- function(input, output, session, encrypt_active) {
   # Initialize reactive value for survey data
   survey_data <- reactiveVal()
 
-  # Define entities and locations
-  entities <- data.frame(
-    entity = c("Entity1", "Entity1", "Entity1", "Entity2", "Entity2", "Entity2"),
-    location = c("Location1", "Location2", "Location3", "Location4", "Location5", "Location6")
-  )
-
   # Process query string parameters
   observe({
-    if (hash_active) {
+    if (encrypt_active) {
+      source("shiny/encrypt.R")
+      
+      # Define entities and locations (convert to db later)
+      entities <- data.frame(
+        entity = c("Google", "Google", "Google", "Anthropic", "Anthropic", "Anthropic"),
+        location = c("San Francisco, CA", "Boulder, CO", "Chicago, IL", "San Francisco, CA", "Seattle, WA", "New York City, NY")
+      )
+      
       all_surveys <- sub("\\.json$", "", list.files("www/", pattern = "*.json", full.names = FALSE))
       all_entities <- unique(entities$entity)
-      hash_objects <- c(all_surveys, all_entities)
-      hash_local <- read.csv("hash.csv")
-      original_nrow <- nrow(hash_local)
-
-      # Function to generate a unique hash
-      generate_unique_hash <- function(existing_hashes) {
-        repeat {
-          # Generate a hash with three random letters and three random numbers
-          new_hash <- paste0(sample(letters, 5, replace = TRUE),
-            sample(0:9, 5, replace = TRUE),
-            collapse = ""
-          )
-
-          # Check if the hash is unique
-          if (!(new_hash %in% existing_hashes)) {
-            return(new_hash)
-          }
+      encrypt_objects <- c(all_surveys, all_entities)
+      encrypt_local <- read.csv("encrypt.csv")
+      original_nrow <- nrow(encrypt_local)
+      
+      # Iterate over encrypt_objects and add new rows for new objects
+      for (obj in encrypt_objects) {
+        if (!(obj %in% encrypt_local$object)) {
+          # Generate a unique encrypt
+          new_encrypt <- generate_unique_encrypt(encrypt_local$encrypt)
+          
+          # Append new row to encrypt_local
+          encrypt_local <- rbind(encrypt_local, data.frame(object = obj, encrypt = new_encrypt))
         }
       }
-
-      # Iterate over hash_objects and add new rows for new objects
-      for (obj in hash_objects) {
-        if (!(obj %in% hash_local$object)) {
-          # Generate a unique hash
-          new_hash <- generate_unique_hash(hash_local$hash)
-
-          # Append new row to hash_local
-          hash_local <- rbind(hash_local, data.frame(object = obj, hash = new_hash))
-        }
-      }
-
+      
       # Check if new rows were added
-      if (nrow(hash_local) > original_nrow) {
-        # Save the updated hash_local back to hash.csv only if new rows were added
-        write.csv(hash_local, "hash.csv", row.names = FALSE)
+      if (nrow(encrypt_local) > original_nrow) {
+        # Save the updated encrypt_local back to encrypt.csv only if new rows were added
+        write.csv(encrypt_local, "encrypt.csv", row.names = FALSE)
       }
-
+      
       # Look up the survey and entity parameters
       query <- parseQueryString(session$clientData$url_search)
       survey <- query$survey
       entity <- query$entity
-      survey_lookup <- hash_local[hash_local$hash == survey, "object"]
-      entity_lookup <- hash_local[hash_local$hash == entity, "object"]
+      survey_lookup <- encrypt_local[encrypt_local$encrypt == survey, "object"]
+      entity_lookup <- encrypt_local[encrypt_local$encrypt == entity, "object"]
       
       # Load and send survey JSON if survey parameter is provided
       if (!is.null(survey)) {
@@ -95,6 +81,7 @@ surveyServer <- function(input, output, session, hash_active) {
       } else {
         session$sendCustomMessage("updateChoices", list("targetQuestion" = "location", "choices" = list("No locations available")))
       }
+      
     }else{
       # Look up the survey and entity parameters
       query <- parseQueryString(session$clientData$url_search)

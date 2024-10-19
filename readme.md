@@ -8,7 +8,7 @@ This app framework is designed with a primary goal in mind: to create a robust, 
 
 -   **Integration with SurveyJS**: Integration with the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor, a free survey builder tool, makes survey creation more accessible for users without advanced technical skills. This feature lowers the entry barrier for survey creators, encouraging a broader range of users to utilize the platform.
 
--   **Automatic Parameter Hashing**: In a public survey platform, security is paramount. Automatic parameter hashing deters unauthorized access or modification of survey data by converting URL parameters to random alphanumeric strings. This feature is crucial for maintaining the integrity of the survey results and ensuring the privacy of the respondents.
+-   **Automatic Parameter Ecrypting**: In a public survey platform, security is paramount. Automatic parameter encrpyting deters unauthorized access or modification of survey data by converting URL parameters to random alphanumeric strings. This feature is crucial for maintaining the integrity of the survey results and ensuring the privacy of the respondents.
 
 -   **Multiple Survey Management**: The ability to host and manage multiple surveys within a single app is essential for a public survey platform. This feature provides flexibility for survey creators, allowing them to cater to different audiences or research goals within the same platform.
 
@@ -30,19 +30,31 @@ This app framework is designed with a primary goal in mind: to create a robust, 
     runApp()
     ```
 
-3.  Access the app using a URL with appropriate parameter hashes:
+3.  Access the app using a URL with appropriate parameter encryption:
+
+    In `app.R`, if encrypt_active \<- FALSE
 
     ```         
-    http://your-app-url.com/?survey=a1b2c3d4e5&entity=f4d9z0g0o1
+    http://your-app-url.com/?survey=dynamicSurvey&entity=Google
     ```
 
+    In `app.R`, if encrypt_active \<- TRUE
+
+    ```         
+    http://your-app-url.com/?survey=RhinocerosOvalTwoHundredTwentySevenTealStardust&entity=MeteorOctagonSlothRedFourHundredFiftySeven
+    ```
+
+    This is an example, and your encryption values will be different.
+
 ## File Structure
+
+The file structure is modular and organized to facilitate easy customization and extension of the app. The key components are the `app.R` file, the `encrypt.csv` file, the `www/` directory for web assets, and the `shiny/` directory for Shiny functions.
 
 ```         
 ShinySurveyJS/
 │
 ├── app.R                 # Main Shiny app file
-├── hash.csv              # Stores mappings between objects and hashes
+├── encrypt.csv           # Stores mappings between objects and URL encryptions
 │
 ├── www/                  # Directory for web assets
 │   ├── _survey.js            # Client-side survey operations
@@ -52,34 +64,29 @@ ShinySurveyJS/
 └── shiny/                # Directory for Shiny functions
     ├── survey.R          # Defines surveyUI and surveyServer functions
     └── messages.R        # Defines messageUI and server message functions
+    └── encrypt.R         # Defines the encryption functions    
 ```
 
-## Hashing System and URL Parameters
+## Encryption System and URL Parameters
 
-ShinySurveyJS has an automated hashing system for URL parameters to enhance security by making it more challenging to directly access or modify URL parameters. It's important to highlight, though, that the current configuration does not eliminate the possibility of the hashes being programmatically discovered.
+The encryption system for URL parameters enhances the security of the surveys by making it more challenging to directly access or modify URL parameters. The encryption functions can be easily modified or swapped in  `encrypt.R.
 
 ### How it Works
 
-When a new parameter (such as a survey, entity, or any custom parameter) is introduced, a unique hash is generated and stored in `hash.csv`, which is structured into two columns: `object` for the actual name or identifier, and `hash` for the unique hash. The hashes are made up of 10 random alphanumeric characters (e.g., "a1b2c3d4e5"), ensuring each hash is unique within the `hash.csv` file and managed automatically by the system. By using these unique hashes in URLs instead of the actual object names or identifiers, the system enhances security and limits direct access or manipulation.
-
-You can disable the hashing mechanism by setting `hash_active = FALSE` in `app.R`. It is recommended to keep this feature enabled to ensure the security of your app. If you disable the hashing mechanism, specify the name of the json file in the survey parameter:
-
-```         
-http://your-app-url.com/?survey=dynamicSurvey
-```
+When a new parameter (such as a survey, entity, or any custom parameter) is introduced, a unique encryption is generated and stored in `encrypt.csv`, which is structured into two columns: `object` for the actual name or identifier, and `encrypt` for the unique encryption.
 
 ## Creating Multiple Surveys
 
 1.  Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a survey JSON.
-2.  Save the JSON as a new file (e.g., `NewSurvey.json`) in the `www/` directory.
-3.  The system will automatically detect the new survey and update `hash.csv` with a unique hash.
-4.  Access the new survey using its hash as a URL parameter:
+2.  Save the JSON as a new file (e.g., `newSurvey.json`) in the `www/` directory.
+3.  The system will automatically detect the new survey and update `encrypt.csv` with a unique encryption.
+4.  Access the new survey using its encryption as a URL parameter:
 
 ```         
-http://your-app-url.com/?survey=a1b2c3d4e5
+http://your-app-url.com/?survey=ThirtySevenCometLionHexagonLime
 ```
 
-Where `a1b2c3d4e5` is the automatically generated hash for the new survey.
+`ThirtySevenCometLionHexagonLime` is the automatically generated encryption for the new survey.
 
 ## Dynamically Updating Fields
 
@@ -88,7 +95,7 @@ The app can dynamically update fields based on various URL parameters. Modify an
 Example of using multiple parameters:
 
 ```         
-http://your-app-url.com/?survey=a1b2c3d4e5&entity=f4d9z0g0o1
+http://your-app-url.com/?survey=RhinocerosOvalTwoHundredTwentySevenTealStardust&entity=MeteorOctagonSlothRedFourHundredFiftySeven
 ```
 
 The app will use these parameters to update relevant fields or settings based on your defined logic.
@@ -96,9 +103,6 @@ The app will use these parameters to update relevant fields or settings based on
 ## To-do ✔️
 
 -   Friendly initialization UI ✔️
--   Hash the URL query parameters ✔️
--   Create a dynamic JSON file option
-    -   Paste JSON file fragments (e.g., demographics)
-    -   Ability to paste data from db into JSON fields
--   Integrate with a db server (self-hosted MySQL/MariaDB server or Supabase)
--   Explore reCAPTCHA integration and bot prevention
+-   Encrypt the URL query parameters ✔️
+-   Integrate with a db server (supabase)
+-   Add reCAPTCHA integration
