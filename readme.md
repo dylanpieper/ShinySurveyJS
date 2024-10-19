@@ -8,7 +8,7 @@ This app framework is designed with a primary goal in mind: to create a robust, 
 
 -   **Integration with SurveyJS**: Integration with the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor, a free survey builder tool, makes survey creation more accessible for users without advanced technical skills. This feature lowers the entry barrier for survey creators, encouraging a broader range of users to utilize the platform.
 
--   **Automatic Parameter Ecrypting**: In a public survey platform, security is paramount. Automatic parameter encrpyting deters unauthorized access or modification of survey data by converting URL parameters to random alphanumeric strings. This feature is crucial for maintaining the integrity of the survey results and ensuring the privacy of the respondents.
+-   **Automatic Parameter Encryption**: In a public survey platform, security is paramount. Automatic parameter encryption deters unauthorized access or modification of survey data by converting URL parameters to random alphanumeric strings. This feature is crucial for maintaining the integrity of the survey results and ensuring the privacy of the respondents.
 
 -   **Multiple Survey Management**: The ability to host and manage multiple surveys within a single app is essential for a public survey platform. This feature provides flexibility for survey creators, allowing them to cater to different audiences or research goals within the same platform.
 
