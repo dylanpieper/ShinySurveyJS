@@ -42,7 +42,7 @@ This app framework is designed with a primary goal in mind: to create a robust, 
     http://your-app-url.com/?survey=RhinocerosOvalTwoHundredTwentySevenTealStardust&entity=MeteorOctagonSlothRedFourHundredFiftySeven
     ```
 
-    This is an example, and your encryption values will be different.
+    This is an example, and your encrypted values will be different.
 
 ## File Structure
 
