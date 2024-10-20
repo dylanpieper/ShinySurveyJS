@@ -1,77 +1,9 @@
-# Function to get latest working version of survey-jquery
-getSurveyVersion <- function(package_name = "survey-jquery", base_version = "1.12.6") {
-  tryCatch({
-    # Load required packages
-    if (!requireNamespace("httr", quietly = TRUE)) {
-      install.packages("httr")
-    }
-    
-    library(httr)
-    
-    # Function to check if version exists
-    checkVersion <- function(version) {
-      url <- paste0("https://unpkg.com/", package_name, "@", version, "/", 
-                    ifelse(package_name == "survey-jquery", "survey.jquery.min.js", ""))
-      response <- GET(url)
-      content <- rawToChar(response$content)
-      
-      # Return TRUE if the package exists (no error message)
-      !grepl("Cannot find package", content, fixed = TRUE)
-    }
-    
-    # Function to increment version, skipping x.0.0 releases
-    incrementVersion <- function(version) {
-      parts <- as.numeric(strsplit(version, "\\.")[[1]])
-      
-      if (parts[3] < 9) {
-        parts[3] <- parts[3] + 1
-      } else {
-        parts[2] <- parts[2] + 1
-        parts[3] <- 1  # Skip the x.y.0 versions
-      }
-      
-      # Check if it's a x.0.0 release, skip to x.1.1
-      if (parts[2] == 0 && parts[3] == 0) {
-        parts[2] <- 1
-        parts[3] <- 1
-      }
-      
-      paste(parts, collapse = ".")
-    }
-    
-    # Start with known working version
-    current_version <- base_version
-    last_working_version <- base_version
-    max_attempts <- 10  # Prevent infinite loop
-    attempt <- 1
-    
-    # Keep incrementing until we find a non-working version
-    while (attempt <= max_attempts) {
-      if (!checkVersion(current_version)) {
-        # Found first non-working version, return the last working one
-        message("Using latest version of ", package_name, ": ", last_working_version)
-        return(last_working_version)
-      }
-      
-      # Current version works, save it and try next version
-      last_working_version <- current_version
-      current_version <- incrementVersion(current_version)
-      attempt <- attempt + 1
-    }
-    
-    # If we hit max attempts, return the last known working version
-    message("Hit maximum attempts, using version: ", last_working_version)
-    return(last_working_version)
-    
-  }, error = function(e) {
-    warning("Error checking version. Using base version ", base_version)
-    return(base_version)
-  })
-}
-
-# Define the UI for the survey
+# Define the survey UI
 surveyUI <- function(id, theme = "defaultV2") {
-  # Get the latest working version
+  
+  source("shiny/versionJS.R")
+  
+  # Get the latest working versions
   version_core <- getSurveyVersion("survey-core")
   version_jquery <- getSurveyVersion("survey-jquery")
   
@@ -91,25 +23,6 @@ surveyUI <- function(id, theme = "defaultV2") {
     tags$div(id = "surveyContainer")
   )
 }
-
-# # Define the UI for the survey
-# surveyUI <- function(id, theme = "defaultV2") {
-#   # Determine CSS file based on theme
-#   css_file <- switch(theme,
-#                      "defaultV2" = "https://unpkg.com/survey-core@1.11.8/defaultV2.fontless.css",
-#                      "modern" = "https://unpkg.com/survey-core@1.11.8/modern.css"
-#   )
-#   
-#   # Load necessary resources and create survey container
-#   tagList(
-#     tags$head(
-#       tags$script(src = "https://unpkg.com/survey-jquery@1.11.8/survey.jquery.min.js"),
-#       tags$link(rel = "stylesheet", href = css_file),
-#       tags$script(src = "_survey.js")
-#     ),
-#     tags$div(id = "surveyContainer")
-#   )
-# }
 
 # Define server logic for the survey
 surveyServer <- function(input, output, session, encrypt_active) {
