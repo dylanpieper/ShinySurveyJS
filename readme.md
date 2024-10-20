@@ -36,17 +36,17 @@ runApp()
 ## Project Structure
 ```
 ShinySurveyJS/
-├── app.R                 # Main Shiny app
+├── app.R                # Main Shiny app
 ├── token.csv            # URL token mappings
 ├── www/                 # Web assets
-│   ├── _survey.js       # Client-side operations
+│   ├── _survey.js          # Client-side operations
 │   ├── dynamicSurvey.json
 │   └── staticSurvey.json
 └── shiny/               # R functions
-    ├── survey.R         # Survey UI/Server
-    ├── messages.R       # Message handling
-    ├── token.R         # Token system
-    └── versionJS.R     # JS dependency checks
+    ├── survey.R            # Survey UI/Server
+    ├── messages.R          # Message handling
+    ├── token.R             # Token system
+    └── versionJS.R         # JS dependency checks
 ```
 
 ## Creating New Surveys
