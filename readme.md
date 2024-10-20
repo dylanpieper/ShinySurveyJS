@@ -23,12 +23,12 @@ runApp()
 
 3. Access survey with URL parameters:
 
-- Without tokenization (token_active = FALSE):
+- Without tokenization (token_active <- FALSE):
     ```
     http://your-app-url.com/?survey=dynamicSurvey&entity=Google
     ```
 
-- With tokenization (token_active = TRUE):
+- With tokenization (token_active <- TRUE):
     ```
     http://your-app-url.com/?survey=RhinocerosOvalTwoHundredTwentySevenTealStardust&entity=MeteorOctagonSlothRedFourHundredFiftySeven
     ```
