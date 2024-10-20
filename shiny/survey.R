@@ -4,8 +4,8 @@ surveyUI <- function(id, theme = "defaultV2") {
   source("shiny/versionJS.R")
   
   # Get the latest working versions
-  version_core <- getSurveyVersion("survey-core")
-  version_jquery <- getSurveyVersion("survey-jquery")
+  version_core <- getSurveyVersion("survey-core", base_version = "1.12.6")
+  version_jquery <- getSurveyVersion("survey-jquery", base_version = "1.12.6")
   
   # Determine CSS file based on theme and version
   css_file <- switch(theme,
