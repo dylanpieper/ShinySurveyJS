@@ -52,7 +52,7 @@ The file structure is modular and organized to facilitate easy customization and
 ShinySurveyJS/
 │
 ├── app.R                 # Main Shiny app file
-├── token.csv           # Stores mappings between objects and URL tokens
+├── token.csv             # Stores mappings between objects and URL tokens
 │
 ├── www/                  # Directory for web assets
 │   ├── _survey.js            # Client-side survey operations
@@ -62,7 +62,7 @@ ShinySurveyJS/
 └── shiny/                # Directory for Shiny functions
     ├── survey.R          # Defines surveyUI and surveyServer functions
     └── messages.R        # Defines messageUI and server message functions
-    └── token.R         # Defines the token functions  
+    └── token.R           # Defines the token functions  
     └── versionJS.R       # Defines the version checking functions for the JS dependencies    
 ```
 
