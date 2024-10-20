@@ -41,8 +41,8 @@ generate_spelled_number <- function() {
   }
 }
 
-# Function to generate encrypted values with options for the number of values returned and their complexity
-generate_encrypt_options <- function(colors, cosmos, animals, shapes, num_options = 1, min_options = 20) {
+# Function to generate tokened values with options for the number of values returned and their complexity
+generate_token_options <- function(colors, cosmos, animals, shapes, num_options = 1, min_options = 20) {
   options <- c()
   
   while (length(options) < min_options) {
@@ -68,15 +68,15 @@ generate_encrypt_options <- function(colors, cosmos, animals, shapes, num_option
   return(sample(options, num_options))
 }
 
-# Function to generate a unique encrypt value
-generate_unique_encrypt <- function(existing_encryptes) {
+# Function to generate a unique token value
+generate_unique_token <- function(existing_tokenes) {
   repeat {
-    # Generate a encrypt with three random letters and three random numbers
-    new_encrypt <- generate_encrypt_options(colors, cosmos, animals, shapes, num_options = 1)
+    # Generate a token with three random letters and three random numbers
+    new_token <- generate_token_options(colors, cosmos, animals, shapes, num_options = 1)
     
-    # Check if the encrypt is unique
-    if (!(new_encrypt %in% existing_encryptes)) {
-      return(new_encrypt)
+    # Check if the token is unique
+    if (!(new_token %in% existing_tokenes)) {
+      return(new_token)
     }
   }
 }

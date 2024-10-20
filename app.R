@@ -20,19 +20,19 @@ ui <- fluidPage(
 
 # Define the server
 server <- function(input, output, session) {
-  # Global logic for activating the URL encryption
-  encrypt_active <- TRUE
+  # Global logic for activating the URL token
+  token_active <- TRUE
   
-  if(encrypt_active){
-    # Read encrypt.csv at the start of the session
-    encrypt_local <- reactiveVal(read.csv("encrypt.csv"))
+  if(token_active){
+    # Read token.csv at the start of the session
+    token_local <- reactiveVal(read.csv("token.csv"))
     # Use the new function to handle URL parameters
-    handle_url_parameters(session, encrypt_local)
+    handle_url_parameters(session, token_local)
   }else{
-    handle_url_parameters_encryptless(session, encrypt_local)
+    handle_url_parameters_tokenless(session, token_local)
   }
   
-  survey_data <- surveyServer(input, output, session, encrypt_active)
+  survey_data <- surveyServer(input, output, session, token_active)
 }
 
 # Run app

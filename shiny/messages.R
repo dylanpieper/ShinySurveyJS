@@ -24,14 +24,14 @@ messageUI <- function() {
 }
 
 # Handle URL parameters and show appropriate messages
-handle_url_parameters <- function(session, encrypt_local) {
+handle_url_parameters <- function(session, token_local) {
   observeEvent(session$clientData$url_search, {
     query <- parseQueryString(session$clientData$url_search)
     
     if (is.null(query$survey)) {
       hide_and_show_message("waitingMessage", "surveyNotDefinedMessage")
     } else {
-      survey_lookup <- encrypt_local()[encrypt_local()$encrypt == query$survey, "object"]
+      survey_lookup <- token_local()[token_local()$token == query$survey, "object"]
       if (length(survey_lookup) == 0) {
         hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
       } else {
@@ -48,7 +48,7 @@ handle_url_parameters <- function(session, encrypt_local) {
 }
 
 # Handle URL parameters and show appropriate messages
-handle_url_parameters_encryptless <- function(session, encrypt_local) {
+handle_url_parameters_tokenless <- function(session, token_local) {
   observeEvent(session$clientData$url_search, {
     query <- parseQueryString(session$clientData$url_search)
     

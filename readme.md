@@ -8,7 +8,7 @@ This app framework is designed with a primary goal in mind: to create a robust, 
 
 -   **Integration with SurveyJS**: Integration with the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor, a free survey builder tool, makes survey creation more accessible for users without advanced technical skills. This feature lowers the entry barrier for survey creators, encouraging a broader range of users to utilize the platform.
 
--   **Automatic Parameter Encryption**: In a public survey platform, security is paramount. Automatic parameter encryption deters unauthorized access or modification of survey data by converting URL parameters to encrypted strings. This feature is crucial for maintaining the integrity of the survey results and ensuring the privacy of the respondents.
+-   **Automatic Parameter Token**: In a public survey platform, security is paramount. Automatic parameter token deters unauthorized access or modification of survey data by converting URL parameters to token strings. This feature is crucial for maintaining the integrity of the survey results and ensuring the privacy of the respondents.
 
 -   **Multiple Survey Management**: The ability to host and manage multiple surveys within a single app is essential for a public survey platform. This feature provides flexibility for survey creators, allowing them to cater to different audiences or research goals within the same platform.
 
@@ -28,31 +28,31 @@ This app framework is designed with a primary goal in mind: to create a robust, 
     runApp()
     ```
 
-3.  Access the app using a URL with appropriate parameter encryption:
+3.  Access the app using a URL with appropriate parameter token:
 
-    In `app.R`, if encrypt_active \<- FALSE
+    In `app.R`, if token_active \<- FALSE
 
     ```         
     http://your-app-url.com/?survey=dynamicSurvey&entity=Google
     ```
 
-    In `app.R`, if encrypt_active \<- TRUE
+    In `app.R`, if token_active \<- TRUE
 
     ```         
     http://your-app-url.com/?survey=RhinocerosOvalTwoHundredTwentySevenTealStardust&entity=MeteorOctagonSlothRedFourHundredFiftySeven
     ```
 
-    This is an example, and your encrypted values will be different.
+    This is an example, and your token values will be different.
 
 ## File Structure
 
-The file structure is modular and organized to facilitate easy customization and extension of the app. The key components are the `app.R` file, the `encrypt.csv` file, the `www/` directory for web assets, and the `shiny/` directory for Shiny functions.
+The file structure is modular and organized to facilitate easy customization and extension of the app. The key components are the `app.R` file, the `token.csv` file, the `www/` directory for web assets, and the `shiny/` directory for Shiny functions.
 
 ```         
 ShinySurveyJS/
 │
 ├── app.R                 # Main Shiny app file
-├── encrypt.csv           # Stores mappings between objects and URL encryptions
+├── token.csv           # Stores mappings between objects and URL tokens
 │
 ├── www/                  # Directory for web assets
 │   ├── _survey.js            # Client-side survey operations
@@ -62,30 +62,30 @@ ShinySurveyJS/
 └── shiny/                # Directory for Shiny functions
     ├── survey.R          # Defines surveyUI and surveyServer functions
     └── messages.R        # Defines messageUI and server message functions
-    └── encrypt.R         # Defines the encryption functions  
+    └── token.R         # Defines the token functions  
     └── versionJS.R       # Defines the version checking functions for the JS dependencies    
 ```
 
-## Encryption System and URL Parameters
+## URL Parameters and Token System
 
-The encryption system for URL parameters enhances the security of the surveys by making it more challenging to directly access or modify URL parameters. The encryption functions can be easily modified or swapped in  `encrypt.R.
+The token system for URL parameters enhances the security of the surveys by making it more challenging to directly access or modify URL parameters. The token functions can be easily modified or swapped in  `token.R.
 
 ### How it Works
 
-When a new parameter (such as a survey, entity, or any custom parameter) is introduced, a unique encryption is generated and stored in `encrypt.csv`, which is structured into two columns: `object` for the actual name or identifier, and `encrypt` for the unique encryption.
+When a new parameter (such as a survey, entity, or any custom parameter) is introduced, a unique token is generated and stored in `token.csv`, which is structured into two columns: `object` for the actual name or identifier, and `token` for the unique token.
 
 ## Creating Multiple Surveys
 
 1.  Use the [SurveyJS](https://surveyjs.io/create-free-survey) visual editor to generate a survey JSON.
 2.  Save the JSON as a new file (e.g., `newSurvey.json`) in the `www/` directory.
-3.  The system will automatically detect the new survey and update `encrypt.csv` with a unique encryption.
-4.  Access the new survey using its encryption as a URL parameter:
+3.  The system will automatically detect the new survey and update `token.csv` with a unique token.
+4.  Access the new survey using its token as a URL parameter:
 
 ```         
 http://your-app-url.com/?survey=ThirtySevenCometLionHexagonLime
 ```
 
-`ThirtySevenCometLionHexagonLime` is the automatically generated encryption for the new survey.
+`ThirtySevenCometLionHexagonLime` is the automatically generated token for the new survey.
 
 ## Dynamically Updating Fields
 
@@ -102,6 +102,6 @@ The app will use these parameters to update relevant fields or settings based on
 ## To-do ✔️
 
 -   Friendly initialization UI ✔️
--   Encrypt the URL query parameters ✔️
+-   Tokenize the URL query parameters ✔️
 -   Integrate with a db server (supabase)
 -   Add reCAPTCHA integration
