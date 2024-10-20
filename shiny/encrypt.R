@@ -41,6 +41,7 @@ generate_spelled_number <- function() {
   }
 }
 
+# Function to generate encrypted values with options for the number of values returned and their complexity
 generate_encrypt_options <- function(colors, cosmos, animals, shapes, num_options = 1, min_options = 20) {
   options <- c()
   
