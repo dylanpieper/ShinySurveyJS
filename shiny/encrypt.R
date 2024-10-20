@@ -66,10 +66,7 @@ generate_encrypt_options <- function(colors, cosmos, animals, shapes, num_option
   return(sample(options, num_options))
 }
 
-# Usage
-# crypt <- generate_encrypt_options(colors, cosmos, animals, shapes, num_options = 1)
-
-# Function to generate a unique encrypt
+# Function to generate a unique encrypt value
 generate_unique_encrypt <- function(existing_encryptes) {
   repeat {
     # Generate a encrypt with three random letters and three random numbers
