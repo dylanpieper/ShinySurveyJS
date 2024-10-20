@@ -31,13 +31,6 @@ verifyVersionFiles <- function(version, package_name) {
 # Get the survey version
 getSurveyVersion <- function(package_name = "survey-jquery", base_version = "1.12.6") {
   tryCatch({
-    # Load required packages
-    if (!requireNamespace("httr", quietly = TRUE)) {
-      install.packages("httr")
-    }
-    
-    library(httr)
-    
     # Function to increment version, skipping x.0.0 releases
     incrementVersion <- function(version) {
       parts <- as.numeric(strsplit(version, "\\.")[[1]])

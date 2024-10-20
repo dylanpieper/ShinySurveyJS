@@ -2,7 +2,7 @@
 if (!require(pacman)) install.packages("pacman")
 
 # Install/load required packages
-pacman::p_load(shiny, jsonlite, shinyjs)
+pacman::p_load(shiny, jsonlite, shinyjs, httr)
 
 # Source shiny functions
 source("shiny/survey.R")
