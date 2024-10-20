@@ -11,6 +11,7 @@ animals <- c("Cat", "Dog", "Butterfly", "Bird", "Horse", "Elephant", "Dolphin", 
 shapes <- c("Square", "Circle", "Triangle", "Rectangle", "Pentagon", "Hexagon", "Star", "Oval", "Diamond", "Heart",
             "Crescent", "Trapezoid", "Parallelogram", "Rhombus", "Octagon", "Cube", "Sphere", "Cylinder", "Cone", "Pyramid")
 
+# Function to generate a spelled number from 0 to 999
 generate_spelled_number <- function() {
   numbers_below_20 <- c("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
                         "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen")
