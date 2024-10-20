@@ -62,7 +62,8 @@ ShinySurveyJS/
 └── shiny/                # Directory for Shiny functions
     ├── survey.R          # Defines surveyUI and surveyServer functions
     └── messages.R        # Defines messageUI and server message functions
-    └── encrypt.R         # Defines the encryption functions    
+    └── encrypt.R         # Defines the encryption functions  
+    └── versionJS.R       # Defines the version checking functions for the JS dependencies    
 ```
 
 ## Encryption System and URL Parameters
