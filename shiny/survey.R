@@ -1,29 +1,8 @@
-# Define the survey UI
-surveyUI <- function(id, theme = "defaultV2") {
-  
-  # Determine CSS file based on theme and version
-  css_file <- switch(theme,
-                     "defaultV2" = paste0("https://unpkg.com/survey-core/defaultV2.fontless.css"),
-                     "modern" = paste0("https://unpkg.com/survey-core/modern.css")
-  )
-  
-  # Load necessary resources and create survey container
-  tagList(
-    tags$head(
-      tags$script(src = paste0("https://unpkg.com/survey-jquery/survey.jquery.min.js")),
-      tags$link(rel = "stylesheet", href = css_file),
-      tags$link(rel = "stylesheet", href = "_custom.css"),
-      tags$script(src = "_survey.js")
-    ),
-    tags$div(id = "surveyContainer")
-  )
-}
-
 # Define server logic for the survey
 surveyServer <- function(input, output, session, token_active) {
   # Initialize reactive value for survey data
   survey_data <- reactiveVal()
-
+  
   # Process query string parameters
   observe({
     if (token_active) {
@@ -35,20 +14,32 @@ surveyServer <- function(input, output, session, token_active) {
         location = c("San Francisco, CA", "Boulder, CO", "Chicago, IL", "San Francisco, CA", "Seattle, WA", "New York City, NY")
       )
       
+      # Retrieve all available surveys
       all_surveys <- sub("\\.json$", "", list.files("www/", pattern = "*.json", full.names = FALSE))
       all_entities <- unique(entities$entity)
-      token_objects <- c(all_surveys, all_entities)
+      
+      # Combine surveys and entities into one object list
+      token_objects <- data.frame(
+        object = c(all_surveys, all_entities),
+        type = c(rep("Survey", length(all_surveys)), rep("Entity", length(all_entities)))  # Distinguish between surveys and entities
+      )
+      
+      # Read the token.csv file
       token_local <- read.csv("token.csv")
       original_nrow <- nrow(token_local)
       
       # Iterate over token_objects and add new rows for new objects
-      for (obj in token_objects) {
+      for (i in seq_along(token_objects$object)) {
+        obj <- token_objects$object[i]
+        obj_type <- token_objects$type[i]
+        
+        # Check if the object already exists in the token.csv file
         if (!(obj %in% token_local$object)) {
           # Generate a unique token
           new_token <- generate_unique_token(token_local$token)
           
-          # Append new row to token_local
-          token_local <- rbind(token_local, data.frame(object = obj, token = new_token))
+          # Append the new object, token, and type to the token_local data frame
+          token_local <- rbind(token_local, data.frame(object = obj, token = new_token, type = obj_type))
         }
       }
       
@@ -84,7 +75,8 @@ surveyServer <- function(input, output, session, token_active) {
         session$sendCustomMessage("updateChoices", list("targetQuestion" = "location", "choices" = list("No locations available")))
       }
       
-    }else{
+    } else {
+      # Handle case when token is not active (same as before)
       # Look up the survey and entity parameters
       query <- parseQueryString(session$clientData$url_search)
       survey <- query$survey
@@ -110,7 +102,7 @@ surveyServer <- function(input, output, session, token_active) {
       }
     }
   })
-
+  
   # Update survey data on input change
   observeEvent(input$surveyData, {
     survey_data(fromJSON(input$surveyData))
@@ -119,6 +111,6 @@ surveyServer <- function(input, output, session, token_active) {
       survey_data()
     })
   })
-
+  
   return(survey_data)
 }

@@ -1,3 +1,4 @@
+# Vectors of words to be used in generating token values
 colors <- c("Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Brown", "Gray", "Black", "White", "Teal",
             "Maroon", "Navy", "Olive", "Lime", "Cyan", "Magenta", "Turquoise", "Lavender", "Crimson", "Indigo")
 

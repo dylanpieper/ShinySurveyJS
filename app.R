@@ -31,7 +31,7 @@ server <- function(input, output, session) {
   }else{
     handle_url_parameters_tokenless(session, token_local)
   }
-  
+
   survey_data <- surveyServer(input, output, session, token_active)
 }
 
