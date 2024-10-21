@@ -39,6 +39,7 @@ ShinySurveyJS/
 ├── app.R                # Main Shiny app
 ├── token.csv            # URL token mappings
 ├── www/                 # Web assets
+│   ├── _custom.css         # UI customizations
 │   ├── _survey.js          # Client-side operations
 │   ├── dynamicSurvey.json
 │   └── staticSurvey.json
@@ -46,7 +47,6 @@ ShinySurveyJS/
     ├── survey.R            # Survey UI/Server
     ├── messages.R          # Message handling
     ├── token.R             # Token system
-    └── versionJS.R         # JS dependency checks
 ```
 
 ## Creating New Surveys
