@@ -67,3 +67,4 @@ http://your-app-url.com/?survey=<generated-token>
 -   ✔️ Friendly initialization UI
 -   ✔️ URL parameter tokenization
 -   ⬜ SQL integration
+-   ⬜ Programmatically generate JSON using SQL tables (optional)
