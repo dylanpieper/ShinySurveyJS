@@ -1,23 +1,18 @@
 # Define the survey UI
 surveyUI <- function(id, theme = "defaultV2") {
   
-  source("shiny/versionJS.R")
-  
-  # Get the latest working versions
-  version_core <- getSurveyVersion("survey-core", base_version = "1.12.6")
-  version_jquery <- getSurveyVersion("survey-jquery", base_version = "1.12.6")
-  
   # Determine CSS file based on theme and version
   css_file <- switch(theme,
-                     "defaultV2" = paste0("https://unpkg.com/survey-core@", version_core, "/defaultV2.fontless.css"),
-                     "modern" = paste0("https://unpkg.com/survey-core@", version_core, "/modern.css")
+                     "defaultV2" = paste0("https://unpkg.com/survey-core/defaultV2.fontless.css"),
+                     "modern" = paste0("https://unpkg.com/survey-core/modern.css")
   )
   
   # Load necessary resources and create survey container
   tagList(
     tags$head(
-      tags$script(src = paste0("https://unpkg.com/survey-jquery@", version_jquery, "/survey.jquery.min.js")),
+      tags$script(src = paste0("https://unpkg.com/survey-jquery/survey.jquery.min.js")),
       tags$link(rel = "stylesheet", href = css_file),
+      tags$link(rel = "stylesheet", href = "_custom.css"),
       tags$script(src = "_survey.js")
     ),
     tags$div(id = "surveyContainer")

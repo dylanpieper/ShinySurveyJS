@@ -10,12 +10,15 @@ $(document).ready(function() {
       
       // Initialize the survey model with the JSON
       survey = new Survey.Model(surveyJSON);
+      
       // Setup to send survey results to server upon completion
       survey.onComplete.add(function(result) {
         Shiny.setInputValue("surveyData", JSON.stringify(result.data));
       });
+      
       // Display the survey in the designated container
       $("#surveyContainer").Survey({ model: survey });
+      
     } catch (error) {
       // Log initialization errors
       console.error("Error initializing survey:", error);
