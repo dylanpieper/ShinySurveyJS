@@ -1,6 +1,6 @@
 # ShinySurveyJS
 
-A template for hosting multiple dynamic surveys in a single **Shiny** app integrated with [**SurveyJS**](https://surveyjs.io/) and **SQL**.
+A template for hosting multiple dynamic surveys using **Shiny**, **SurveyJS**, and **SQL**.
 
 ## Key Features
 
