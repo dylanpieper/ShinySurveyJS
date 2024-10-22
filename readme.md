@@ -59,7 +59,7 @@ http://your-app-url.com/?survey=<generated-token>
 ## URL Parameter System
 
 -   Automatically generates and stores unique tokens in `token.csv`
--   Supports multiple parameters (survey, entity, custom parameters)
+-   Supports multiple parameters (survey, entity)
 -   Enhances security by obscuring direct parameter access
 
 ## Roadmap
