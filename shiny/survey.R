@@ -1,4 +1,25 @@
-# Define server logic for the survey
+# Define the survey UI
+surveyUI <- function(id, theme = "defaultV2") {
+  
+  # Determine CSS file based on theme and version
+  css_file <- switch(theme,
+                     "defaultV2" = paste0("https://unpkg.com/survey-core/defaultV2.fontless.css"),
+                     "modern" = paste0("https://unpkg.com/survey-core/modern.css")
+  )
+  
+  # Load necessary resources and create survey container
+  tagList(
+    tags$head(
+      tags$script(src = paste0("https://unpkg.com/survey-jquery/survey.jquery.min.js")),
+      tags$link(rel = "stylesheet", href = css_file),
+      tags$link(rel = "stylesheet", href = "_custom.css"),
+      tags$script(src = "_survey.js")
+    ),
+    tags$div(id = "surveyContainer")
+  )
+}
+
+# Define server logic for survey
 surveyServer <- function(input, output, session, token_active) {
   # Initialize reactive value for survey data
   survey_data <- reactiveVal()
@@ -6,7 +27,9 @@ surveyServer <- function(input, output, session, token_active) {
   # Process query string parameters
   observe({
     if (token_active) {
+      # Handle case when token is active
       source("shiny/token.R")
+      source("shiny/database.R")
       
       # Define entities and locations (convert to db later)
       entities <- data.frame(
@@ -21,11 +44,11 @@ surveyServer <- function(input, output, session, token_active) {
       # Combine surveys and entities into one object list
       token_objects <- data.frame(
         object = c(all_surveys, all_entities),
-        type = c(rep("Survey", length(all_surveys)), rep("Entity", length(all_entities)))  # Distinguish between surveys and entities
+        type = c(rep("Survey", length(all_surveys)), rep("Entity", length(all_entities)))
       )
       
-      # Read the token.csv file
-      token_local <- read.csv("token.csv")
+      # Read tokens table
+      token_local <- read_tokens_table()
       original_nrow <- nrow(token_local)
       
       # Iterate over token_objects and add new rows for new objects
@@ -33,23 +56,23 @@ surveyServer <- function(input, output, session, token_active) {
         obj <- token_objects$object[i]
         obj_type <- token_objects$type[i]
         
-        # Check if the object already exists in the token.csv file
+        # Check if the object already exists in the tokens table
         if (!(obj %in% token_local$object)) {
           # Generate a unique token
           new_token <- generate_unique_token(token_local$token)
           
-          # Append the new object, token, and type to the token_local data frame
+          # Append new object, token, and type to token_local data frame
           token_local <- rbind(token_local, data.frame(object = obj, token = new_token, type = obj_type))
         }
       }
       
       # Check if new rows were added
       if (nrow(token_local) > original_nrow) {
-        # Save the updated token_local back to token.csv only if new rows were added
-        write.csv(token_local, "token.csv", row.names = FALSE)
+        # Save updated token_local back to tokens table if new rows were added
+        write_to_tokens_table(token_local)
       }
       
-      # Look up the survey and entity parameters
+      # Look up survey and entity parameters
       query <- parseQueryString(session$clientData$url_search)
       survey <- query$survey
       entity <- query$entity
@@ -71,12 +94,10 @@ surveyServer <- function(input, output, session, token_active) {
       if (!is.null(entity)) {
         locations <- entities[entities$entity == entity_lookup, "location"]
         session$sendCustomMessage("updateChoices", list("targetQuestion" = "location", "choices" = as.list(locations)))
-      } else {
-        session$sendCustomMessage("updateChoices", list("targetQuestion" = "location", "choices" = list("No locations available")))
       }
       
     } else {
-      # Handle case when token is not active (same as before)
+      # Handle case when token is not active
       # Look up the survey and entity parameters
       query <- parseQueryString(session$clientData$url_search)
       survey <- query$survey
@@ -97,8 +118,6 @@ surveyServer <- function(input, output, session, token_active) {
       if (!is.null(entity)) {
         locations <- entities[entities$entity == entity, "location"]
         session$sendCustomMessage("updateChoices", list("targetQuestion" = "location", "choices" = as.list(locations)))
-      } else {
-        session$sendCustomMessage("updateChoices", list("targetQuestion" = "location", "choices" = list("No locations available")))
       }
     }
   })

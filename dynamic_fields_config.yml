@@ -1,0 +1,4 @@
+fields:
+  - table_name: "entities"
+    group_col: "entity"
+    choices_col: "location"

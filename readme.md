@@ -25,9 +25,9 @@ runApp()
 
 3.  Access survey with URL parameters:
 
--   Without tokenization (token_active \<- FALSE): `http://your-app-url.com/?survey=dynamicSurvey&entity=Google`
+-   Without tokenization (token_active \<- FALSE): `/?survey=dynamicSurvey&entity=Google`
 
--   With tokenization (token_active \<- TRUE): `http://your-app-url.com/?survey=TriangleBirdTwoHundredFiftyFourPlanetBrown&entity=PulsarTurquoisePyramidCheetahEightHundredNinetyNine`
+-   With tokenization (token_active \<- TRUE): `/?survey=TriangleBirdTwoHundredFiftyFourPlanetBrown&entity=PulsarTurquoisePyramidCheetahEightHundredNinetyNine`
 
 ## Project Structure
 
@@ -53,7 +53,7 @@ ShinySurveyJS/
 3.  Access using generated token:
 
 ```         
-http://your-app-url.com/?survey=<generated-token>
+/?survey=<generated-token>
 ```
 
 ## URL Parameter System

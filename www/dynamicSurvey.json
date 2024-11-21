@@ -10,7 +10,8 @@
       "type": "dropdown",
       "name": "location",
       "title": "Select your location",
-      "choices": []
+      "choices": [],
+      "isRequired": true
     }
   ]
 }

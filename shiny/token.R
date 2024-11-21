@@ -1,4 +1,4 @@
-# Vectors of words to be used in generating token values
+# Vectors of used to generate token values
 colors <- c("Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Brown", "Gray", "Black", "White", "Teal",
             "Maroon", "Navy", "Olive", "Lime", "Cyan", "Magenta", "Turquoise", "Lavender", "Crimson", "Indigo")
 
@@ -42,7 +42,7 @@ generate_spelled_number <- function() {
   }
 }
 
-# Function to generate tokened values with options for the number of values returned and their complexity
+# Function to generate tokens with options for the number of values returned and their complexity
 generate_token_options <- function(colors, cosmos, animals, shapes, num_options = 1, min_options = 20) {
   options <- c()
   
@@ -72,7 +72,7 @@ generate_token_options <- function(colors, cosmos, animals, shapes, num_options 
 # Function to generate a unique token value
 generate_unique_token <- function(existing_tokenes) {
   repeat {
-    # Generate a token with three random letters and three random numbers
+    # Generate a token
     new_token <- generate_token_options(colors, cosmos, animals, shapes, num_options = 1)
     
     # Check if the token is unique
