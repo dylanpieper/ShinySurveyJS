@@ -2,3 +2,4 @@ fields:
   - table_name: "entities"
     group_col: "entity"
     choices_col: "location"
+    surveys: ["dynamicSurvey1", "dynamicSurvey2"]

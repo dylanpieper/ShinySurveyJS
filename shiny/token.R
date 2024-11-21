@@ -42,7 +42,7 @@ generate_spelled_number <- function() {
   }
 }
 
-# Function to generate tokens with options for the number of values returned and their complexity
+# Function to generate tokens with options for length and complexity
 generate_token_options <- function(colors, cosmos, animals, shapes, num_options = 1, min_options = 20) {
   options <- c()
   
@@ -75,7 +75,7 @@ generate_unique_token <- function(existing_tokenes) {
     # Generate a token
     new_token <- generate_token_options(colors, cosmos, animals, shapes, num_options = 1)
     
-    # Check if the token is unique
+    # Check if token is unique
     if (!(new_token %in% existing_tokenes)) {
       return(new_token)
     }

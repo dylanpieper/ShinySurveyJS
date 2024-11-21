@@ -1,19 +1,27 @@
-# Install pacman (package manager)
-if (!require(pacman)) install.packages("pacman")
+# Install pak (package manager)
+# if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
 
-# Install/load required packages
-pacman::p_load(shiny, jsonlite, shinyjs, httr, DBI, RPostgres, yaml)
+# Install required packages
+# pak::pkg_install(c("shiny", "jsonlite", "shinyjs", "httr", "DBI", "RPostgres", "yaml"))
+
+# Load required packages
+library(shiny)
+library(jsonlite)
+library(shinyjs)
+library(httr)
+library(DBI)
+library(RPostgres)
+library(yaml)
 
 # Source shiny functions
 source("shiny/survey.R")
 source("shiny/messages.R")
 source("shiny/database.R")
 
-# Setup the database (remove in production)
-create_tokens_table()
-create_dynamic_field_tables()
+# Setup database tables
+setup_database()
 
-# Define the UI
+# Define UI
 ui <- fluidPage(
   useShinyjs(),
   messageUI(),
@@ -23,21 +31,28 @@ ui <- fluidPage(
   tableOutput("surveyData")
 )
 
-# Define the server
+# Define server
 server <- function(input, output, session) {
-  # Global logic for activating the URL token
+  # Global logic for activating URL token
   token_active <- TRUE
   
   if(token_active){
-    # Read token.csv at the start of the session
-    token_local <- reactiveVal(read_tokens_table())
-    # Use the new function to handle URL parameters
-    handle_url_parameters(session, token_local)
+    # Read tokens at start of session
+    token_table <- read_table("tokens")
+    token_reactive <- reactiveVal(token_table)
+    
+    # Handle URL parameters with tokens
+    handle_url_parameters(session, token_reactive)
+    
+    # Run survey server with tokens
+    survey_data <- surveyServer(input, output, session, token_active, token_table)
   }else{
-    handle_url_parameters_tokenless(session, token_local)
+    # Handle URL parameters without tokens
+    handle_url_parameters_tokenless(session, token_reactive)
+    
+    # Run survey server without tokens
+    survey_data <- surveyServer(input, output, session, token_active)
   }
-
-  survey_data <- surveyServer(input, output, session, token_active)
 }
 
 # Run app
