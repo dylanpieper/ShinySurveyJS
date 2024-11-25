@@ -1,4 +1,4 @@
-# UI message functions
+# Style messages
 messageUI <- function() {
   list(
     tags$head(
@@ -35,6 +35,7 @@ handle_url_parameters <- function(session, token_reactive) {
       if (length(survey_lookup) == 0) {
         hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
       } else {
+        # JSON file is used for checking if the survey exists
         survey_json_path <- file.path("www", paste0(survey_lookup, ".json"))
         
         if (file.exists(survey_json_path)) {
@@ -58,6 +59,7 @@ handle_url_parameters_tokenless <- function(session, token_reactive) {
       if (length(query$survey) == 0) {
         hide_and_show_message("waitingMessage", "surveyNotFoundMessage")
       } else {
+        # Again, JSON file is used for checking if the survey exists
         survey_json_path <- file.path("www", paste0(query$survey, ".json"))
         
         if (file.exists(survey_json_path)) {

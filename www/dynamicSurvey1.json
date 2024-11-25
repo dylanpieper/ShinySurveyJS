@@ -3,7 +3,7 @@
   "elements": [
     {
       "type": "text",
-      "name": "question1",
+      "name": "name",
       "title": "What is your name?"
     },
     {
