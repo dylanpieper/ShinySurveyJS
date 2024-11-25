@@ -81,21 +81,15 @@ runApp()
 
 3.  Access survey with URL query parameters:
 
--   Without tokens (`token_active <- FALSE`): `/?survey=dynamicSurvey&entity=Google`
+Generic:
+-  Without tokens (same as JSON file name): `/?survey=name`
+-  With tokens: `/?survey=token`
 
+Examples with dynamic fields:
+-   Without tokens (`token_active <- FALSE`): `/?survey=dynamicSurvey&entity=Google`
 -   With tokens (`token_active <- TRUE`): `/?survey=LimeMeteorSevenHundredThirtyTwo&entity=LimeSixHundredThirtyFiveSun`
 
 Tokenization is used by default. Be aware that using tokens is a slower process and may not be necessary for your use case. You can customize the tokenization algorithm in `shiny/token.R`.
-
-## Create New Surveys
-
-1.  Generate survey JSON using [SurveyJS Editor](https://surveyjs.io/create-free-survey)
-2.  Save JSON file in `www/` directory
-3.  Access using generated token:
-
-```         
-/?survey=token
-```
 
 ## Use Other Databases
 
