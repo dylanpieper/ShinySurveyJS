@@ -1,6 +1,10 @@
 # ShinySurveyJS
 
-A template for hosting multiple dynamic surveys using **Shiny**, **SurveyJS**, and **PostgreSQL**.
+A template for hosting multiple surveys using **Shiny**, **SurveyJS**, and **PostgreSQL**.
+
+## Why SurveyJS?
+
+SurveyJS is a mature, open-source survey creation library that redefines how online questionnaires are designed. Unlike other Shiny-based survey tools like [surveydown](https://github.com/surveydown-dev/surveydown) or [shinysurveys](https://github.com/jdtrat/shinysurveys), SurveyJS provides an [advanced visual editor](https://surveyjs.io/create-free-survey) with built-in support for branching logic and validation, allowing users to easily create dynamic and interactive questionnaires. Additional features include support for diverse question types and robust customization options like theming, adding panels and pages, and suporting multiple languages. Balancing security, performance, and flexibility, SurveyJS is a powerful tool for academic and commercial use cases, making sophisticated survey design accessible to all.
 
 ## Key Features
 
@@ -31,11 +35,18 @@ db:
   password: "password"
 ```
 
+3.  Install the required R packages:
+
+``` r
+if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
+pak::pkg_install(c("shiny", "jsonlite", "shinyjs", "httr", "DBI", "RPostgres", "yaml", "future", "promises"))
+```
+
 I recommend using [Supabase](https://supabase.com/) for a free PostgreSQL database.
 
 ## Setup Dynamic Fields
 
-1.  Setup the database: Create the table `entities` in your database to explore the example surveys and dynamic fields functionality. You can execute the following queries to create the table and insert the sample data, assuming your schema name is `public`.
+1.  Create the table `entities` in your database to explore the example surveys and dynamic fields functionality. You can execute the following queries to create the table and insert the sample data, assuming your schema name is `public`.
 
 ``` sql
 CREATE TABLE entities (
@@ -71,7 +82,7 @@ fields:
 setup_database()
 ```
 
-Consider commenting out this line. Run only if you want to update the tokens after adding a new (1) survey, (2) dynamic field configuration in `dynamic_fields_config.yml`, or (3) unique value for `group_col` in a dynamic fields table. Keeping this line will slow down the app initialization. **These processes will be automated.**
+Consider commenting out this line. Run only if you want to update the tokens after adding a new (1) survey, (2) dynamic field configuration in `dynamic_fields_config.yml`, or (3) unique value for `group_col` in a dynamic fields table. Keeping this line will slow down the app initialization. **These processes will be automated in a future version of the template.**
 
 2.  Run the app:
 
@@ -81,13 +92,9 @@ runApp()
 
 3.  Access survey with URL query parameters:
 
-Generic:
--  Without tokens (same as JSON file name): `/?survey=name`
--  With tokens: `/?survey=token`
+Generic: - Without tokens (same as JSON file name): `/?survey=name` - With tokens: `/?survey=token`
 
-Examples with dynamic fields:
--   Without tokens (`token_active <- FALSE`): `/?survey=dynamicSurvey&entity=Google`
--   With tokens (`token_active <- TRUE`): `/?survey=LimeMeteorSevenHundredThirtyTwo&entity=LimeSixHundredThirtyFiveSun`
+Examples with dynamic fields: - Without tokens (`token_active <- FALSE`): `/?survey=dynamicSurvey&entity=Google` - With tokens (`token_active <- TRUE`): `/?survey=LimeMeteorSevenHundredThirtyTwo&entity=LimeSixHundredThirtyFiveSun`
 
 Tokenization is used by default. Be aware that using tokens is a slower process and may not be necessary for your use case. You can customize the tokenization algorithm in `shiny/token.R`.
 

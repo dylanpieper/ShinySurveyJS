@@ -13,7 +13,7 @@ db_connect <- function() {
   return(con)
 }
 
-# Create the 'tokens' table if it doesn't exist, ensuring it has the necessary columns
+# Create the 'tokens' table if it doesn't exist
 create_tokens_table <- function() {
   con <- db_connect()
   on.exit(dbDisconnect(con), add = TRUE)
@@ -70,7 +70,7 @@ delete_from_tokens_table <- function(objects_to_remove) {
   })
 }
 
-# Read dynamic field configurations and create corresponding tables with specified columns if they don't exist
+# Read dynamic field configurations and create tables/columns if they don't exist
 create_dynamic_field_tables <- function() {
   config <- read_yaml("dynamic_fields_config.yml")
   if (!"fields" %in% names(config) || !is.list(config$fields)) {
@@ -123,8 +123,14 @@ read_table <- function(table_name) {
 }
 
 # Set up the database by creating necessary tables and generating tokens
-setup_database <- function() {
-  create_tokens_table()
-  create_dynamic_field_tables()
-  generate_tokens()
+setup_database <- function(token_table = NULL) {
+  if (mode == "initial") {
+    create_tokens_table()
+    create_dynamic_field_tables()
+    generate_tokens(token_table)
+  }
+  
+  if (mode == "tokens") {
+    generate_tokens(token_table)
+  }
 }

@@ -1,4 +1,5 @@
-surveyUI <- function(id, theme = "defaultV2") {
+# Define the Shiny UI and server functions for rendering surveys
+surveyUI <- function(id = NULL, theme = "defaultV2") {
   # Determine the CSS file based on the selected theme to style the survey UI
   css_file <- switch(theme,
                      "defaultV2" = paste0("https://unpkg.com/survey-core/defaultV2.fontless.css"),
@@ -17,12 +18,17 @@ surveyUI <- function(id, theme = "defaultV2") {
   )
 }
 
-surveyServer <- function(input, output, session, token_active, token_table = NULL) {
+# Define the server function for handling survey data and dynamic field configurations
+surveyServer <- function(input = NULL, 
+                         output = NULL, 
+                         session = NULL, 
+                         token_active = NULL, 
+                         token_table = NULL) {
   survey_data <- reactiveVal()
   
   observe({
     if (token_active) {
-      # Parse and validate the survey token from the URL query to ensure it's valid for the session
+      # Parse and validate the survey token from the URL query
       query <- parseQueryString(session$clientData$url_search)
       survey <- query$survey
       
@@ -159,70 +165,73 @@ surveyServer <- function(input, output, session, token_active, token_table = NUL
 }
 
 # Generate a unique token for all surveys and dynamic field groups
-generate_tokens <- function() {
+generate_tokens <- function(token_table = NULL) {
   # Load required scripts and configurations for token management
   source("shiny/token.R")
   source("shiny/database.R")
   config <- read_yaml("dynamic_fields_config.yml")
-  all_groups <- c()
   
   # Aggregate all unique groups from configured tables for token generation
-  for (field in seq_along(config$fields)) {
-    field_config <- config$fields[[field]]
-    table_name <- field_config$table_name
-    table_data <- read_table(table_name)
-    table_group_col <- field_config$group_col
-    table_groups <- table_data[[table_group_col]]
-    all_groups <- unique(c(all_groups, table_groups))
+  all_groups <- tryCatch({
+    unique(unlist(lapply(config$fields, function(field_config) {
+      table_data <- read_table(field_config$table_name)
+      table_data[[field_config$group_col]]
+    })))
+  }, error = function(e) {
+    message("Error reading table data: ", e$message)
+    return(NULL)
+  })
+  
+  # If reading the table data failed, do not proceed
+  if (is.null(all_groups)) {
+    message("Function aborted due to error in reading table data")
+    return(invisible(token_table))
   }
   
-  # Identify all survey files to include in the token table
+  # Identify all survey files to include in `tokens` table
   all_surveys <- sub("\\.json$", "", list.files("www/", pattern = "*.json", full.names = FALSE))
   
   # Create a data frame of current survey and group objects
-  current_objects <- data.frame(
+  current_objects <- unique(data.frame(
     object = c(all_surveys, all_groups),
     type = c(rep("Survey", length(all_surveys)), rep("Group", length(all_groups))),
     stringsAsFactors = FALSE
-  )
+  ))
   
-  current_objects <- unique(current_objects)
+  # Check for obsolete objects and new objects
+  objects_to_remove <- setdiff(token_table$object, current_objects$object)
+  new_objects <- current_objects[!(current_objects$object %in% token_table$object), ]
   
-  # Connect to the database to manage the tokens table
-  con <- db_connect()
-  token_table <- dbReadTable(con, "tokens")
-  dbDisconnect(con)
-  
-  # Remove any duplicate entries from the tokens table to maintain integrity
-  if (any(duplicated(token_table$object))) {
-    token_table <- token_table[!duplicated(token_table$object), ]
-    delete_from_tokens_table(token_table$object)
-    write_to_tokens_table(token_table)
-    message("Removed duplicate entries from tokens table")
+  # Exit early if no updates are needed
+  if (length(objects_to_remove) == 0 && nrow(new_objects) == 0) {
+    message("No updates needed for `tokens` table")
+    return(invisible(token_table))
   }
   
-  # Identify and remove obsolete objects from the tokens table
-  objects_to_remove <- token_table$object[!(token_table$object %in% current_objects$object)]
+  # Remove any duplicate entries from `tokens` table
+  if (any(duplicated(token_table$object))) {
+    token_table <- token_table[!duplicated(token_table$object), ]
+  }
   
+  # Remove obsolete objects from `tokens` table
   if (length(objects_to_remove) > 0) {
-    rows_deleted <- delete_from_tokens_table(objects_to_remove)
-    message(sprintf("Removed %d obsolete entries from tokens table", rows_deleted))
+    delete_from_tokens_table(objects_to_remove)
     token_table <- token_table[!(token_table$object %in% objects_to_remove), ]
+    message(sprintf("Removed %d obsolete entries from `tokens` table", length(objects_to_remove)))
   }
   
   # Generate and add new tokens for any new survey or group objects
-  new_objects <- current_objects[!(current_objects$object %in% token_table$object), ]
-  
   if (nrow(new_objects) > 0) {
     existing_tokens <- token_table$token
-    new_tokens <- sapply(seq_len(nrow(new_objects)), function(x) {
+    new_tokens <- replicate(nrow(new_objects), {
       repeat {
         token <- generate_unique_token(existing_tokens)
         if (!(token %in% existing_tokens)) {
           existing_tokens <- c(existing_tokens, token)
-          return(token)
+          break
         }
       }
+      token
     })
     
     new_entries <- data.frame(
@@ -233,22 +242,17 @@ generate_tokens <- function() {
     )
     
     write_to_tokens_table(new_entries)
-    message(sprintf("Added %d new entries to tokens table", nrow(new_entries)))
+    message(sprintf("Added %d new entries to `tokens` table", nrow(new_entries)))
     token_table <- rbind(token_table, new_entries)
   }
   
-  # Notify if no updates are needed for the tokens table
-  if (length(objects_to_remove) == 0 && nrow(new_objects) == 0) {
-    message("No updates needed for tokens table")
-  }
-  
-  # Final integrity checks for duplicate entries in the tokens table
+  # Final integrity checks for duplicate entries in `tokens` table
   if (any(duplicated(token_table$object))) {
-    warning("Unexpected duplicate objects found in final token table")
+    warning("Unexpected duplicate objects found in final `tokens` table")
   }
   if (any(duplicated(token_table$token))) {
-    warning("Unexpected duplicate tokens found in final token table")
+    warning("Unexpected duplicate tokens found in final `tokens` table")
   }
   
-  invisible(token_table)  # Return the updated token table invisibly
+  invisible(token_table)
 }
