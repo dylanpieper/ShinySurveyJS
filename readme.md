@@ -89,10 +89,12 @@ runApp()
 ```
 
 3.  Access survey with URL query parameters:
-
-Generic: - Without tokens (same as JSON file name): `/?survey=name` - With tokens: `/?survey=token`
-
-Examples with dynamic fields: - Without tokens (`token_active <- FALSE`): `/?survey=dynamicSurvey&entity=Google` - With tokens (`token_active <- TRUE`): `/?survey=LimeMeteorSevenHundredThirtyTwo&entity=LimeSixHundredThirtyFiveSun`
+    -   Generic:
+        -   Without tokens (same as JSON file name): `/?survey=name`
+        -   With tokens: `/?survey=token`
+    -   Examples with dynamic fields:
+        -   Without tokens (`token_active <- FALSE`): `/?survey=dynamicSurvey&entity=Google`
+        -   With tokens (`token_active <- TRUE`): `/?survey=LimeMeteorSevenHundredThirtyTwo&entity=LimeSixHundredThirtyFiveSun`
 
 Tokenization is used by default. Be aware that using tokens is a slower process and may not be necessary for your use case. You can customize the tokenization algorithm in `shiny/token.R`.
 
