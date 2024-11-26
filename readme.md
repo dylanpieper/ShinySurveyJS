@@ -4,11 +4,11 @@ A template for hosting multiple surveys using **Shiny**, **SurveyJS**, and **Pos
 
 ## Why SurveyJS?
 
-SurveyJS is a mature, open-source survey creation library that redefines how online questionnaires are designed. Unlike other Shiny-based survey tools like [surveydown](https://github.com/surveydown-dev/surveydown) or [shinysurveys](https://github.com/jdtrat/shinysurveys), SurveyJS provides an [advanced visual editor](https://surveyjs.io/create-free-survey) with built-in support for branching logic and validation, allowing users to easily create dynamic and interactive questionnaires. Additional features include support for diverse question types and robust customization options like theming, adding panels and pages, and suporting multiple languages. Balancing security, performance, and flexibility, SurveyJS is a powerful tool for academic and commercial use cases.
+SurveyJS is a mature, open-source survey creation library that redefines how online questionnaires are designed. Unlike other Shiny-based survey tools like [surveydown](https://github.com/surveydown-dev/surveydown) or [shinysurveys](https://github.com/jdtrat/shinysurveys), SurveyJS provides an advanced [visual editor](https://surveyjs.io/create-free-survey) with built-in support for branching logic and validation, allowing users to easily create dynamic and interactive questionnaires. Additional features include support for diverse question types and robust customization options like theming, adding panels and pages, and suporting multiple languages. Balancing security, performance, and flexibility, SurveyJS is a powerful tool for academic and commercial use cases.
 
 ## Key Features
 
--   Visual survey creation using [SurveyJS Editor](https://surveyjs.io/create-free-survey)
+-   Visual survey creation using SurveyJS's [visual editor](https://surveyjs.io/create-free-survey)
 -   Multiple surveys in a single app
 -   URL query tokens prevent user manipulation of public surveys
     -   Automatically generates and stores unique tokens in the database
@@ -76,13 +76,11 @@ fields:
 
 ## Run Survey App
 
-1.  In `app.R`, use the following line to create the necessary tables and generate the tokens for all survey objects and dynamic field groups:
+1.  In `app.R`, run the following line once to create the necessary tables and generate the tokens for all survey objects and dynamic field groups:
 
 ``` r
-setup_database()
+setup_database("initial")
 ```
-
-Consider commenting out this line. Run only if you want to update the tokens after adding a new (1) survey, (2) dynamic field configuration in `dynamic_fields_config.yml`, or (3) unique value for `group_col` in a dynamic fields table. Keeping this line will slow down the app initialization. **These processes will be automated in a future version of the template.**
 
 2.  Run the app:
 
