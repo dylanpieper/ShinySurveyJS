@@ -4,7 +4,7 @@ A template for hosting multiple surveys using **Shiny**, **SurveyJS**, and **Pos
 
 ## Why SurveyJS?
 
-SurveyJS is a mature, open-source survey creation library that redefines how online questionnaires are designed. Unlike other Shiny-based survey tools like [surveydown](https://github.com/surveydown-dev/surveydown) or [shinysurveys](https://github.com/jdtrat/shinysurveys), SurveyJS provides an [advanced visual editor](https://surveyjs.io/create-free-survey) with built-in support for branching logic and validation, allowing users to easily create dynamic and interactive questionnaires. Additional features include support for diverse question types and robust customization options like theming, adding panels and pages, and suporting multiple languages. Balancing security, performance, and flexibility, SurveyJS is a powerful tool for academic and commercial use cases, making sophisticated survey design accessible to all.
+SurveyJS is a mature, open-source survey creation library that redefines how online questionnaires are designed. Unlike other Shiny-based survey tools like [surveydown](https://github.com/surveydown-dev/surveydown) or [shinysurveys](https://github.com/jdtrat/shinysurveys), SurveyJS provides an [advanced visual editor](https://surveyjs.io/create-free-survey) with built-in support for branching logic and validation, allowing users to easily create dynamic and interactive questionnaires. Additional features include support for diverse question types and robust customization options like theming, adding panels and pages, and suporting multiple languages. Balancing security, performance, and flexibility, SurveyJS is a powerful tool for academic and commercial use cases.
 
 ## Key Features
 
