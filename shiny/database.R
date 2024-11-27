@@ -122,15 +122,64 @@ read_table <- function(table_name) {
   })
 }
 
-# Set up the database by creating necessary tables and generating tokens
-setup_database <- function(token_table = NULL) {
-  if (mode == "initial") {
-    create_tokens_table()
-    create_dynamic_field_tables()
-    generate_tokens(token_table)
+setup_database <- function(mode, token_table) {
+  # Validate input parameters
+  if (missing(mode) || missing(token_table)) {
+    stop("Both 'mode' and 'token_table' arguments must be provided")
   }
   
-  if (mode == "tokens") {
-    generate_tokens(token_table)
+  if (!mode %in% c("initial", "tokens")) {
+    stop("Invalid 'mode': Accepted values are 'initial' or 'tokens'")
   }
+  
+  if (!is.data.frame(token_table) || nrow(token_table) == 0) {
+    stop("'token_table' must be a non-empty data frame")
+  }
+  
+  if (!identical(sort(names(token_table)), sort(c("object", "token", "type")))) {
+    stop("'token_table' must have exactly the columns: 'object', 'token', and 'type'")
+  }
+  
+  if (!all(token_table$type %in% c("Group", "Survey"))) {
+    stop("'type' column must only include the values 'Group' or 'Survey'")
+  }
+  
+  tryCatch({
+    if (mode == "initial") {
+      # Ensure the necessary functions exist
+      if (!exists("create_tokens_table", mode = "function")) {
+        stop("'create_tokens_table' function is not available")
+      }
+      
+      if (!exists("create_dynamic_field_tables", mode = "function")) {
+        stop("'create_dynamic_field_tables' function is not available")
+      }
+      
+      if (!exists("generate_tokens", mode = "function")) {
+        stop("'generate_tokens' function is not available")
+      }
+      
+      # Execute the operations with error handling
+      message("Setting up database in 'initial' mode...")
+      create_tokens_table()
+      create_dynamic_field_tables()
+      generate_tokens(token_table)
+      message("Database setup completed in 'initial' mode")
+    }
+    
+    if (mode == "tokens") {
+      # Check for function existence
+      if (!exists("generate_tokens", mode = "function")) {
+        stop("'generate_tokens' function is not available")
+      }
+      
+      message("Generating tokens in 'tokens' mode...")
+      generate_tokens(token_table)
+      message("Token generation completed")
+    }
+  }, error = function(e) {
+    # Handle errors gracefully
+    message("An error occurred during setup: ", e$message)
+    stop("Database setup failed. Please check the input parameters and the environment")
+  })
 }
