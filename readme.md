@@ -46,7 +46,7 @@ I recommend using [Supabase](https://supabase.com/) for a free PostgreSQL databa
 
 ## Setup Dynamic Fields
 
-1.  Create the table `entities` in your database to explore the example surveys and dynamic fields functionality. You can execute the following queries to create the table and insert the sample data, assuming your schema name is `public`.
+1.  Create the table `entities` in your database to explore the example surveys and dynamic fields functionality. You can execute the following queries to create the table and insert the sample data.
 
 ``` sql
 CREATE TABLE entities (
@@ -64,7 +64,7 @@ VALUES
     ('Google', 'Chicago, IL');
 ```
 
-2.  Optionally, create and manage your own dynamic fields table by adding your table and mapping your fields to the `dynamic_fields_config.yml` file. The `group_col` is the column that will be used to filter the dynamic fields, which is assigned a token and used in the URL query parameter. The `choices_col` is the column that will be used to locate the field name and populate the survey choices. The `surveys` field is a list of surveys that the dynamic field applies to.
+2.  Optionally, create and manage your own dynamic fields table by adding your table and mapping your fields to the `dynamic_fields_config.yml` file. The `group_col` is the column that will be used to filter the dynamic fields, which is assigned a token and used in the URL query parameter. The `choices_col` is the column that will be used to locate the field name and populate the survey choices. The `surveys` field is a list of survey names that the dynamic field applies to.
 
 ``` yaml
 fields:
@@ -98,7 +98,7 @@ runApp()
 
 Tokenization is used by default. Be aware that using tokens is a slower process and may not be necessary for your use case. You can customize the tokenization algorithm in `shiny/token.R`.
 
-## Use Other Databases
+## Use Any Database
 
 Easily change the database driver in `db.R` to use any database system compatible with the `DBI` package (see [list of backends](https://github.com/r-dbi/backends#readme)). The `RPostgres` package is used by default.
 

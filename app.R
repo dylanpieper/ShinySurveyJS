@@ -17,7 +17,7 @@ source("shiny/survey.R")
 source("shiny/messages.R")
 source("shiny/database.R")
 
-# Initialize the database (run once)
+# Initialize database (run once)
 # setup_database("initial")
 
 # Set up future plan for background execution (adjust for your environment)
@@ -29,14 +29,13 @@ ui <- fluidPage(
   div(id = "surveyContainer",
       surveyUI("survey", theme = "modern")
   ),
-  tableOutput("surveyData")  # No need for any dynamic feedback in this example
+  tableOutput("surveyData")
 )
 
 server <- function(input, output, session) {
   
   token_active <- TRUE
   
-  # Asynchronous database setup triggered at app start (no feedback to user)
   observe({
     if (token_active) {
       token_table <- read_table("tokens")
@@ -44,16 +43,17 @@ server <- function(input, output, session) {
       handle_url_parameters(session, token_reactive)
       survey_data <- surveyServer(input, output, session, token_active, token_table)
       
-      # Run setup_database asynchronously in the background
-      # Using promises to handle the future's result
+      # Run setup_database() asynchronously to speed up app initialization
+      # Use promises to gather feedback from future's result
+      # This setup process generates any tokens that are missing from the database
+      # If new tokens are created, users can access them on the next page load
       future({
+        Sys.sleep(2)
         setup_database("tokens", token_table)
       }) %...>% {
-        # Log success message
         message("Database setup completed")
       } %...!% {
-        # Log error message if future fails
-        message("Error during database setup")
+        message("Error during database setup: Remove `future` to view the error message and debug the issue")
       }
     } else {
       handle_url_parameters_tokenless(session, token_reactive)
